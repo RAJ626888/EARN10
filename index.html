@@ -1,398 +1,647 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>EARN10 - Refer • Play • Earn</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EARN10 - Refer • Play • Earn</title>
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f4f7fb;color:#222}
-header{background:#111827;color:white;padding:20px;text-align:center}
-.logo{font-size:36px;font-weight:bold;color:#22c55e}
-.tagline{color:#ddd;margin-top:5px}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-.hero{text-align:center;background:white;padding:45px 20px}
-.hero h1{font-size:35px;margin-bottom:12px}
-.hero p{color:#666;margin-bottom:22px}
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-.btn{
-border:0;background:#22c55e;color:white;padding:13px 24px;
-border-radius:9px;font-weight:bold;cursor:pointer
-}
+    body {
+      background: #f4f7fb;
+      color: #222;
+    }
 
-.auth{
-background:white;width:360px;max-width:92%;
-margin:25px auto;padding:28px;border-radius:15px;
-box-shadow:0 4px 15px #0001
-}
+    .header {
+      background: #111827;
+      color: white;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.auth h2{text-align:center;margin-bottom:18px}
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
 
-.input{
-width:100%;padding:13px;margin:7px 0;
-border:1px solid #ddd;border-radius:8px
-}
+    .logo span {
+      color: #22c55e;
+    }
 
-.auth .btn{width:100%;margin-top:10px}
+    .container {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+    }
 
-.switch{text-align:center;margin-top:15px;color:#666}
-.switch span{color:#16a34a;font-weight:bold;cursor:pointer}
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      margin-bottom: 20px;
+    }
 
-#signupBox{display:none}
+    h2 {
+      margin-bottom: 15px;
+    }
 
-.dashboard{
-display:none;
-padding:30px 18px;
-max-width:1000px;
-margin:auto
-}
+    input {
+      width: 100%;
+      padding: 13px;
+      margin: 8px 0;
+      border: 1px solid #ddd;
+      border-radius: 9px;
+      font-size: 15px;
+    }
 
-.welcome{
-text-align:center;
-margin-bottom:25px
-}
+    button {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 9px;
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 8px;
+    }
 
-.welcome h2{font-size:28px}
+    button:hover {
+      background: #16a34a;
+    }
 
-.stats{
-display:flex;
-gap:15px;
-justify-content:center;
-flex-wrap:wrap
-}
+    .secondary {
+      background: #374151;
+    }
 
-.stat{
-background:white;
-width:210px;
-padding:22px;
-text-align:center;
-border-radius:14px;
-box-shadow:0 4px 15px #0001
-}
+    .danger {
+      background: #ef4444;
+    }
 
-.stat .number{
-font-size:30px;
-font-weight:bold;
-color:#22c55e;
-margin-top:8px
-}
+    .hidden {
+      display: none;
+    }
 
-.referral{
-background:white;
-margin-top:22px;
-padding:25px;
-border-radius:14px;
-box-shadow:0 4px 15px #0001
-}
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
 
-.referral h3{margin-bottom:10px}
+    .stat {
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
 
-.referral p{
-color:#666;
-margin-bottom:15px
-}
+    .stat h3 {
+      font-size: 25px;
+      color: #16a34a;
+      margin-top: 8px;
+    }
 
-.linkbox{
-display:flex;
-gap:8px;
-margin-bottom:12px
-}
+    .refbox {
+      background: #ecfdf5;
+      padding: 15px;
+      border-radius: 10px;
+      word-break: break-all;
+      margin: 10px 0;
+    }
 
-.linkbox input{
-flex:1;
-padding:12px;
-border:1px solid #ddd;
-border-radius:8px;
-font-size:14px
-}
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #f3f4f6;
+    }
 
-.copy{background:#2563eb}
-
-.share{background:#7c3aed}
-
-.logout{
-background:#ef4444;
-margin-top:20px
-}
-
-.features{
-display:flex;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap;
-margin-top:22px
-}
-
-.feature{
-background:white;
-width:210px;
-padding:22px;
-text-align:center;
-border-radius:14px;
-box-shadow:0 4px 15px #0001
-}
-
-.feature div{
-font-size:38px;
-margin-bottom:10px
-}
-
-footer{
-background:#0b1120;
-color:#aaa;
-text-align:center;
-padding:25px;
-margin-top:30px
-}
-</style>
+    @media(max-width:700px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">EARN10</div>
-<div class="tagline">Refer • Play • Earn</div>
-</header>
+  <div class="header">
+    <div class="logo">EARN<span>10</span></div>
+    <div>Refer • Play • Earn</div>
+  </div>
 
-<section class="hero">
-<h1>Earn Rewards Online 💰</h1>
-<p>Refer friends, play and collect eligible rewards.</p>
-</section>
+  <!-- AUTH -->
+  <div id="authSection" class="container">
 
-<section class="auth" id="auth">
+    <div class="card">
+      <h2>Login</h2>
 
-<div id="loginBox">
-<h2>Login 🔐</h2>
+      <input id="loginEmail" type="email" placeholder="Email">
+      <input id="loginPassword" type="password" placeholder="Password">
 
-<input class="input" id="loginEmail"
-type="email" placeholder="Email">
+      <button onclick="login()">Login</button>
 
-<input class="input" id="loginPassword"
-type="password" placeholder="Password">
+      <div id="loginMessage" class="message"></div>
+    </div>
 
-<button class="btn" onclick="login()">Login</button>
+    <div class="card">
+      <h2>Create Account</h2>
 
-<div class="switch">
-Don't have an account?
-<span onclick="showSignup()">Sign Up</span>
-</div>
-</div>
+      <input id="signupName" type="text" placeholder="Your Name">
+      <input id="signupEmail" type="email" placeholder="Email">
+      <input id="signupPassword" type="password" placeholder="Password">
 
-<div id="signupBox">
-<h2>Create Account 📝</h2>
+      <button onclick="signup()">Create Account</button>
 
-<input class="input" id="signupName"
-type="text" placeholder="Full Name">
+      <div id="signupMessage" class="message"></div>
+    </div>
 
-<input class="input" id="signupEmail"
-type="email" placeholder="Email">
+  </div>
 
-<input class="input" id="signupPassword"
-type="password" placeholder="Password">
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="container hidden">
 
-<button class="btn" onclick="signup()">Create Account</button>
+    <div class="card">
+      <h2>Welcome, <span id="userName">User</span> 👋</h2>
+      <p id="userEmail"></p>
+      <button class="danger" onclick="logout()">Logout</button>
+    </div>
 
-<div class="switch">
-Already have an account?
-<span onclick="showLogin()">Login</span>
-</div>
-</div>
+    <div class="stats">
 
-</section>
+      <div class="stat">
+        <p>Wallet Balance</p>
+        <h3>₹<span id="balance">0</span></h3>
+      </div>
 
-<section class="dashboard" id="dashboard">
+      <div class="stat">
+        <p>Total Referrals</p>
+        <h3 id="referralCount">0</h3>
+      </div>
 
-<div class="welcome">
-<h2>Welcome to EARN10 🎉</h2>
-<p>Your rewards dashboard</p>
-</div>
+      <div class="stat">
+        <p>Referral Reward</p>
+        <h3>₹10</h3>
+      </div>
 
-<div class="stats">
+    </div>
 
-<div class="stat">
-💰
-<p>Wallet Balance</p>
-<div class="number" id="balance">₹0</div>
-</div>
+    <div class="card">
+      <h2>🎁 Your Referral</h2>
 
-<div class="stat">
-👥
-<p>Total Referrals</p>
-<div class="number" id="referrals">0</div>
-</div>
+      <p>Your Referral Code:</p>
 
-<div class="stat">
-🎁
-<p>Referral Reward</p>
-<div class="number">₹10</div>
-</div>
+      <div class="refbox">
+        <strong id="referralCode">Loading...</strong>
+      </div>
 
-</div>
+      <p>Your Referral Link:</p>
 
-<div class="referral">
+      <div class="refbox" id="referralLink">
+        Loading...
+      </div>
 
-<h3>🔗 Your Referral Link</h3>
+      <button onclick="copyReferral()">Copy Link</button>
+      <button class="secondary" onclick="shareReferral()">Share</button>
+    </div>
 
-<p>Share this link with your friends.</p>
+    <div class="card">
+      <h2>🎮 Games</h2>
+      <p>Games and rewards will be added here.</p>
+      <button onclick="alert('Game coming soon!')">Play Game</button>
+    </div>
 
-<div class="linkbox">
+    <div class="card">
+      <h2>💰 Withdraw</h2>
+      <p>Withdrawal system will be connected after wallet verification.</p>
+      <button onclick="alert('Withdrawal feature coming soon!')">
+        Withdraw
+      </button>
+    </div>
 
-<input id="refLink" readonly>
-
-<button class="btn copy" onclick="copyLink()">Copy</button>
-
-</div>
-
-<button class="btn share" onclick="shareLink()">
-📤 Share Referral Link
-</button>
-
-</div>
-
-<div class="features">
-
-<div class="feature">
-<div>🎮</div>
-<h3>Games</h3>
-<p>Play eligible games.</p>
-</div>
-
-<div class="feature">
-<div>🏆</div>
-<h3>Leaderboard</h3>
-<p>See top members.</p>
-</div>
-
-<div class="feature">
-<div>💸</div>
-<h3>Withdrawal</h3>
-<p>Manage eligible rewards.</p>
-</div>
-
-</div>
-
-<button class="btn logout" onclick="logout()">Logout</button>
-
-</section>
-
-<footer>
-<p>© 2026 EARN10. All rights reserved.</p>
-</footer>
+  </div>
 
 <script>
 
-function showSignup(){
-document.getElementById("loginBox").style.display="none";
-document.getElementById("signupBox").style.display="block";
-}
+  // ==========================================
+  // SUPABASE CONNECTION
+  // ==========================================
 
-function showLogin(){
-document.getElementById("signupBox").style.display="none";
-document.getElementById("loginBox").style.display="block";
-}
+  const SUPABASE_URL = "https://rwwihwmlsdqafehtywdl.supabase.co";
 
-function generateCode(){
-return "E10-" + Math.random().toString(36).substring(2,8).toUpperCase();
-}
+  const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
 
-function signup(){
+  const supabaseClient =
+    window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
 
-let name=document.getElementById("signupName").value;
-let email=document.getElementById("signupEmail").value;
-let password=document.getElementById("signupPassword").value;
 
-if(!name || !email || !password){
-alert("Please fill all fields");
-return;
-}
+  // ==========================================
+  // CREATE REFERRAL CODE
+  // ==========================================
 
-let user={
-name:name,
-email:email,
-password:password,
-code:generateCode(),
-balance:0,
-referrals:0
-};
+  function createReferralCode() {
 
-localStorage.setItem("earn10_user",JSON.stringify(user));
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-alert("Account created successfully!");
-showLogin();
-}
+    let code = "E10-";
 
-function login(){
+    for(let i = 0; i < 6; i++) {
+      code += chars[Math.floor(Math.random() * chars.length)];
+    }
 
-let email=document.getElementById("loginEmail").value;
-let password=document.getElementById("loginPassword").value;
+    return code;
+  }
 
-let user=JSON.parse(localStorage.getItem("earn10_user"));
 
-if(!user){
-alert("Please create an account first.");
-return;
-}
+  // ==========================================
+  // SIGNUP
+  // ==========================================
 
-if(email===user.email && password===user.password){
+  async function signup() {
 
-document.getElementById("auth").style.display="none";
-document.getElementById("dashboard").style.display="block";
+    const name =
+      document.getElementById("signupName").value.trim();
 
-loadDashboard(user);
+    const email =
+      document.getElementById("signupEmail").value.trim();
 
-}else{
-alert("Email or password is incorrect.");
-}
-}
+    const password =
+      document.getElementById("signupPassword").value;
 
-function loadDashboard(user){
+    const message =
+      document.getElementById("signupMessage");
 
-document.getElementById("balance").innerText="₹"+user.balance;
-document.getElementById("referrals").innerText=user.referrals;
 
-let base=window.location.href.split("?")[0];
+    if(!name || !email || !password) {
 
-document.getElementById("refLink").value=
-base+"?ref="+user.code;
-}
+      message.innerText =
+        "Please fill all fields.";
 
-function copyLink(){
+      return;
+    }
 
-let input=document.getElementById("refLink");
 
-navigator.clipboard.writeText(input.value);
+    if(password.length < 6) {
 
-alert("Referral link copied!");
-}
+      message.innerText =
+        "Password must be at least 6 characters.";
 
-function shareLink(){
+      return;
+    }
 
-let link=document.getElementById("refLink").value;
 
-if(navigator.share){
+    message.innerText =
+      "Creating account...";
 
-navigator.share({
-title:"Join EARN10",
-text:"Join EARN10 and earn eligible rewards!",
-url:link
-});
 
-}else{
+    const { data, error } =
+      await supabaseClient.auth.signUp({
 
-navigator.clipboard.writeText(link);
+        email: email,
 
-alert("Referral link copied! You can share it with your friends.");
+        password: password,
 
-}
-}
+        options: {
 
-function logout(){
+          data: {
+            name: name
+          }
 
-document.getElementById("dashboard").style.display="none";
-document.getElementById("auth").style.display="block";
+        }
 
-}
+      });
+
+
+    if(error) {
+
+      message.innerText =
+        error.message;
+
+      return;
+    }
+
+
+    message.innerText =
+      "Account created! Check your email if confirmation is required.";
+
+
+    if(data.user) {
+
+      await createUserProfile(
+        data.user,
+        name
+      );
+
+    }
+
+  }
+
+
+  // ==========================================
+  // CREATE USER PROFILE
+  // ==========================================
+
+  async function createUserProfile(user, name) {
+
+    const referralCode =
+      createReferralCode();
+
+
+    const { error } =
+      await supabaseClient
+      .from("users")
+      .insert({
+
+        id: user.id,
+
+        name: name,
+
+        email: user.email,
+
+        referral_code: referralCode,
+
+        balance: 0,
+
+        referral_count: 0
+
+      });
+
+
+    if(error) {
+
+      console.log(
+        "Profile error:",
+        error.message
+      );
+
+    }
+
+  }
+
+
+  // ==========================================
+  // LOGIN
+  // ==========================================
+
+  async function login() {
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+
+    if(!email || !password) {
+
+      message.innerText =
+        "Email and password required.";
+
+      return;
+    }
+
+
+    message.innerText =
+      "Logging in...";
+
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email: email,
+
+        password: password
+
+      });
+
+
+    if(error) {
+
+      message.innerText =
+        error.message;
+
+      return;
+    }
+
+
+    message.innerText =
+      "Login successful!";
+
+    await loadDashboard();
+
+  }
+
+
+  // ==========================================
+  // LOAD DASHBOARD
+  // ==========================================
+
+  async function loadDashboard() {
+
+    const {
+      data: {
+        user
+      }
+    } =
+      await supabaseClient.auth.getUser();
+
+
+    if(!user) {
+
+      document
+        .getElementById("authSection")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("dashboard")
+        .classList.add("hidden");
+
+      return;
+
+    }
+
+
+    const { data, error } =
+      await supabaseClient
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+    if(error) {
+
+      console.log(error);
+
+      return;
+
+    }
+
+
+    document
+      .getElementById("authSection")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById("dashboard")
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById("userName")
+      .innerText =
+      data?.name ||
+      user.user_metadata?.name ||
+      "User";
+
+
+    document
+      .getElementById("userEmail")
+      .innerText =
+      user.email;
+
+
+    document
+      .getElementById("balance")
+      .innerText =
+      data?.balance || 0;
+
+
+    document
+      .getElementById("referralCount")
+      .innerText =
+      data?.referral_count || 0;
+
+
+    document
+      .getElementById("referralCode")
+      .innerText =
+      data?.referral_code || "Not generated";
+
+
+    const link =
+      window.location.origin +
+      window.location.pathname +
+      "?ref=" +
+      (data?.referral_code || "");
+
+
+    document
+      .getElementById("referralLink")
+      .innerText =
+      link;
+
+  }
+
+
+  // ==========================================
+  // LOGOUT
+  // ==========================================
+
+  async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    location.reload();
+
+  }
+
+
+  // ==========================================
+  // COPY REFERRAL
+  // ==========================================
+
+  async function copyReferral() {
+
+    const link =
+      document
+      .getElementById("referralLink")
+      .innerText;
+
+
+    await navigator.clipboard.writeText(link);
+
+    alert("Referral link copied!");
+
+  }
+
+
+  // ==========================================
+  // SHARE
+  // ==========================================
+
+  async function shareReferral() {
+
+    const link =
+      document
+      .getElementById("referralLink")
+      .innerText;
+
+
+    if(navigator.share) {
+
+      await navigator.share({
+
+        title: "Join EARN10",
+
+        text: "Join EARN10 and earn rewards!",
+
+        url: link
+
+      });
+
+    } else {
+
+      await navigator.clipboard.writeText(link);
+
+      alert("Referral link copied!");
+
+    }
+
+  }
+
+
+  // ==========================================
+  // CHECK LOGIN ON PAGE LOAD
+  // ==========================================
+
+  loadDashboard();
+
+
+  // ==========================================
+  // AUTH STATE
+  // ==========================================
+
+  supabaseClient.auth.onAuthStateChange(
+    async (event, session) => {
+
+      if(session) {
+
+        await loadDashboard();
+
+      }
+
+    }
+  );
 
 </script>
 
