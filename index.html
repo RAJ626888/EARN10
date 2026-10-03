@@ -141,7 +141,9 @@
     <div>Refer • Play • Earn</div>
   </div>
 
-  <!-- AUTH -->
+
+  <!-- LOGIN / SIGNUP -->
+
   <div id="authSection" class="container">
 
     <div class="card">
@@ -154,6 +156,7 @@
 
       <div id="loginMessage" class="message"></div>
     </div>
+
 
     <div class="card">
       <h2>Create Account</h2>
@@ -169,14 +172,23 @@
 
   </div>
 
+
   <!-- DASHBOARD -->
+
   <div id="dashboard" class="container hidden">
 
     <div class="card">
-      <h2>Welcome, <span id="userName">User</span> 👋</h2>
+      <h2>
+        Welcome, <span id="userName">User</span> 👋
+      </h2>
+
       <p id="userEmail"></p>
-      <button class="danger" onclick="logout()">Logout</button>
+
+      <button class="danger" onclick="logout()">
+        Logout
+      </button>
     </div>
+
 
     <div class="stats">
 
@@ -197,13 +209,17 @@
 
     </div>
 
+
     <div class="card">
+
       <h2>🎁 Your Referral</h2>
 
       <p>Your Referral Code:</p>
 
       <div class="refbox">
-        <strong id="referralCode">Loading...</strong>
+        <strong id="referralCode">
+          Loading...
+        </strong>
       </div>
 
       <p>Your Referral Link:</p>
@@ -212,35 +228,66 @@
         Loading...
       </div>
 
-      <button onclick="copyReferral()">Copy Link</button>
-      <button class="secondary" onclick="shareReferral()">Share</button>
+      <button onclick="copyReferral()">
+        Copy Link
+      </button>
+
+      <button class="secondary" onclick="shareReferral()">
+        Share
+      </button>
+
     </div>
 
+
     <div class="card">
+
       <h2>🎮 Games</h2>
-      <p>Games and rewards will be added here.</p>
-      <button onclick="alert('Game coming soon!')">Play Game</button>
+
+      <p>
+        Games and rewards will be added here.
+      </p>
+
+      <button onclick="alert('Game coming soon!')">
+        Play Game
+      </button>
+
     </div>
 
+
     <div class="card">
+
       <h2>💰 Withdraw</h2>
-      <p>Withdrawal system will be connected after wallet verification.</p>
+
+      <p>
+        Withdrawal system will be connected after wallet verification.
+      </p>
+
       <button onclick="alert('Withdrawal feature coming soon!')">
         Withdraw
       </button>
+
     </div>
 
   </div>
 
+
 <script>
 
-  // ==========================================
+  // =========================================
   // SUPABASE CONNECTION
-  // ==========================================
+  // =========================================
 
-  const SUPABASE_URL = "https://rwwihwmlsdqafehtywdl.supabase.co";
+  const SUPABASE_URL =
+    "https://rwwihwmlsdqafehtywdl.supabase.co";
 
-  const SUPABASE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+  // IMPORTANT:
+  // Replace YOUR_PUBLISHABLE_KEY with your
+  // Supabase Publishable key.
+
+  const SUPABASE_KEY =sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI
+    
+
 
   const supabaseClient =
     window.supabase.createClient(
@@ -249,9 +296,9 @@
     );
 
 
-  // ==========================================
-  // CREATE REFERRAL CODE
-  // ==========================================
+  // =========================================
+  // REFERRAL CODE
+  // =========================================
 
   function createReferralCode() {
 
@@ -260,34 +307,44 @@
 
     let code = "E10-";
 
-    for(let i = 0; i < 6; i++) {
-      code += chars[Math.floor(Math.random() * chars.length)];
+    for (let i = 0; i < 6; i++) {
+
+      code +=
+        chars[
+          Math.floor(
+            Math.random() * chars.length
+          )
+        ];
+
     }
 
     return code;
   }
 
 
-  // ==========================================
+  // =========================================
   // SIGNUP
-  // ==========================================
+  // =========================================
 
   async function signup() {
 
     const name =
-      document.getElementById("signupName").value.trim();
+      document.getElementById("signupName")
+      .value.trim();
 
     const email =
-      document.getElementById("signupEmail").value.trim();
+      document.getElementById("signupEmail")
+      .value.trim();
 
     const password =
-      document.getElementById("signupPassword").value;
+      document.getElementById("signupPassword")
+      .value;
 
     const message =
       document.getElementById("signupMessage");
 
 
-    if(!name || !email || !password) {
+    if (!name || !email || !password) {
 
       message.innerText =
         "Please fill all fields.";
@@ -296,7 +353,7 @@
     }
 
 
-    if(password.length < 6) {
+    if (password.length < 6) {
 
       message.innerText =
         "Password must be at least 6 characters.";
@@ -327,7 +384,7 @@
       });
 
 
-    if(error) {
+    if (error) {
 
       message.innerText =
         error.message;
@@ -336,11 +393,7 @@
     }
 
 
-    message.innerText =
-      "Account created! Check your email if confirmation is required.";
-
-
-    if(data.user) {
+    if (data.user) {
 
       await createUserProfile(
         data.user,
@@ -349,14 +402,21 @@
 
     }
 
+
+    message.innerText =
+      "Account created successfully. Check your email if confirmation is required.";
+
   }
 
 
-  // ==========================================
-  // CREATE USER PROFILE
-  // ==========================================
+  // =========================================
+  // USER PROFILE
+  // =========================================
 
-  async function createUserProfile(user, name) {
+  async function createUserProfile(
+    user,
+    name
+  ) {
 
     const referralCode =
       createReferralCode();
@@ -382,7 +442,7 @@
       });
 
 
-    if(error) {
+    if (error) {
 
       console.log(
         "Profile error:",
@@ -394,23 +454,25 @@
   }
 
 
-  // ==========================================
+  // =========================================
   // LOGIN
-  // ==========================================
+  // =========================================
 
   async function login() {
 
     const email =
-      document.getElementById("loginEmail").value.trim();
+      document.getElementById("loginEmail")
+      .value.trim();
 
     const password =
-      document.getElementById("loginPassword").value;
+      document.getElementById("loginPassword")
+      .value;
 
     const message =
       document.getElementById("loginMessage");
 
 
-    if(!email || !password) {
+    if (!email || !password) {
 
       message.innerText =
         "Email and password required.";
@@ -423,8 +485,9 @@
       "Logging in...";
 
 
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
+    const { error } =
+      await supabaseClient.auth
+      .signInWithPassword({
 
         email: email,
 
@@ -433,7 +496,7 @@
       });
 
 
-    if(error) {
+    if (error) {
 
       message.innerText =
         error.message;
@@ -450,9 +513,9 @@
   }
 
 
-  // ==========================================
-  // LOAD DASHBOARD
-  // ==========================================
+  // =========================================
+  // DASHBOARD
+  // =========================================
 
   async function loadDashboard() {
 
@@ -461,21 +524,21 @@
         user
       }
     } =
-      await supabaseClient.auth.getUser();
+      await supabaseClient.auth
+      .getUser();
 
 
-    if(!user) {
-
-      document
-        .getElementById("authSection")
-        .classList.remove("hidden");
+    if (!user) {
 
       document
-        .getElementById("dashboard")
-        .classList.add("hidden");
+      .getElementById("authSection")
+      .classList.remove("hidden");
+
+      document
+      .getElementById("dashboard")
+      .classList.add("hidden");
 
       return;
-
     }
 
 
@@ -487,75 +550,82 @@
       .maybeSingle();
 
 
-    if(error) {
+    if (error) {
 
-      console.log(error);
+      console.log(
+        "Database error:",
+        error.message
+      );
 
       return;
-
     }
 
 
     document
-      .getElementById("authSection")
-      .classList.add("hidden");
+    .getElementById("authSection")
+    .classList.add("hidden");
 
 
     document
-      .getElementById("dashboard")
-      .classList.remove("hidden");
+    .getElementById("dashboard")
+    .classList.remove("hidden");
 
 
     document
-      .getElementById("userName")
-      .innerText =
+    .getElementById("userName")
+    .innerText =
       data?.name ||
       user.user_metadata?.name ||
       "User";
 
 
     document
-      .getElementById("userEmail")
-      .innerText =
+    .getElementById("userEmail")
+    .innerText =
       user.email;
 
 
     document
-      .getElementById("balance")
-      .innerText =
+    .getElementById("balance")
+    .innerText =
       data?.balance || 0;
 
 
     document
-      .getElementById("referralCount")
-      .innerText =
+    .getElementById("referralCount")
+    .innerText =
       data?.referral_count || 0;
 
 
     document
-      .getElementById("referralCode")
-      .innerText =
-      data?.referral_code || "Not generated";
+    .getElementById("referralCode")
+    .innerText =
+      data?.referral_code ||
+      "Not generated";
+
+
+    const referralCode =
+      data?.referral_code || "";
 
 
     const link =
       window.location.origin +
       window.location.pathname +
       "?ref=" +
-      (data?.referral_code || "");
+      referralCode;
 
 
     document
-      .getElementById("referralLink")
-      .innerText =
+    .getElementById("referralLink")
+    .innerText =
       link;
 
   }
 
 
-  // ==========================================
+  // =========================================
   // LOGOUT
-  // ==========================================
+  // =========================================
 
   async function logout() {
 
@@ -566,9 +636,9 @@
   }
 
 
-  // ==========================================
+  // =========================================
   // COPY REFERRAL
-  // ==========================================
+  // =========================================
 
   async function copyReferral() {
 
@@ -578,16 +648,20 @@
       .innerText;
 
 
-    await navigator.clipboard.writeText(link);
+    await navigator.clipboard
+      .writeText(link);
 
-    alert("Referral link copied!");
+
+    alert(
+      "Referral link copied!"
+    );
 
   }
 
 
-  // ==========================================
+  // =========================================
   // SHARE
-  // ==========================================
+  // =========================================
 
   async function shareReferral() {
 
@@ -597,13 +671,14 @@
       .innerText;
 
 
-    if(navigator.share) {
+    if (navigator.share) {
 
       await navigator.share({
 
         title: "Join EARN10",
 
-        text: "Join EARN10 and earn rewards!",
+        text:
+          "Join EARN10 and earn rewards!",
 
         url: link
 
@@ -611,30 +686,34 @@
 
     } else {
 
-      await navigator.clipboard.writeText(link);
+      await navigator.clipboard
+        .writeText(link);
 
-      alert("Referral link copied!");
+      alert(
+        "Referral link copied!"
+      );
 
     }
 
   }
 
 
-  // ==========================================
-  // CHECK LOGIN ON PAGE LOAD
-  // ==========================================
+  // =========================================
+  // PAGE LOAD
+  // =========================================
 
   loadDashboard();
 
 
-  // ==========================================
+  // =========================================
   // AUTH STATE
-  // ==========================================
+  // =========================================
 
-  supabaseClient.auth.onAuthStateChange(
+  supabaseClient.auth
+  .onAuthStateChange(
     async (event, session) => {
 
-      if(session) {
+      if (session) {
 
         await loadDashboard();
 
