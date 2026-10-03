@@ -2,142 +2,68 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>EARN10 - Refer, Play & Earn</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EARN10 - Refer • Play • Earn</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+body{background:#f4f7fb;color:#222}
+header{background:#111827;color:white;padding:22px;text-align:center}
+.logo{font-size:36px;font-weight:bold;color:#22c55e}
+.tagline{margin-top:5px;color:#ddd}
 
-body{
-    background:#f4f7fb;
-    color:#222;
-}
-
-header{
-    background:#111827;
-    color:white;
-    padding:20px;
-    text-align:center;
-}
-
-.logo{
-    font-size:36px;
-    font-weight:bold;
-    color:#22c55e;
-}
-
-.tagline{
-    margin-top:5px;
-    color:#ddd;
-}
-
-.hero{
-    background:white;
-    text-align:center;
-    padding:60px 20px;
-}
-
-.hero h1{
-    font-size:38px;
-    margin-bottom:15px;
-}
-
-.hero p{
-    color:#666;
-    font-size:18px;
-    margin-bottom:25px;
-}
+.hero{text-align:center;background:white;padding:55px 20px}
+.hero h1{font-size:36px;margin-bottom:12px}
+.hero p{color:#666;margin-bottom:25px}
 
 .btn{
-    display:inline-block;
-    background:#22c55e;
-    color:white;
-    padding:14px 30px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:bold;
+display:inline-block;background:#22c55e;color:white;
+padding:13px 25px;border:0;border-radius:10px;
+font-weight:bold;cursor:pointer;text-decoration:none
 }
 
 .cards{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    padding:40px 20px;
+display:flex;justify-content:center;gap:20px;
+flex-wrap:wrap;padding:35px 20px
 }
-
 .card{
-    background:white;
-    width:280px;
-    padding:30px 20px;
-    text-align:center;
-    border-radius:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+background:white;width:280px;padding:25px;text-align:center;
+border-radius:15px;box-shadow:0 4px 15px #0001
 }
+.icon{font-size:42px;margin-bottom:10px}
+.card p{color:#666;margin-top:10px;line-height:1.5}
 
-.icon{
-    font-size:45px;
-    margin-bottom:15px;
+.auth{
+background:white;width:350px;max-width:90%;
+margin:20px auto 45px;padding:30px;
+border-radius:15px;box-shadow:0 4px 15px #0001
 }
-
-.card h2{
-    margin-bottom:10px;
+.auth h2{text-align:center;margin-bottom:20px}
+.input{
+width:100%;padding:13px;margin:8px 0;
+border:1px solid #ddd;border-radius:8px
 }
+.auth .btn{width:100%;margin-top:10px}
+.switch{text-align:center;margin-top:15px;color:#666}
+.switch span{color:#16a34a;font-weight:bold;cursor:pointer}
 
-.card p{
-    color:#666;
-    line-height:1.5;
+#signupBox{display:none}
+
+.dashboard{
+display:none;
+background:#111827;color:white;
+padding:35px 20px;text-align:center
 }
-
-.steps{
-    background:#111827;
-    color:white;
-    padding:45px 20px;
-    text-align:center;
+.balance{
+font-size:34px;color:#22c55e;font-weight:bold;
+margin:15px
 }
-
-.steps h2{
-    margin-bottom:30px;
-    font-size:30px;
-}
-
-.step-box{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-.step{
-    background:#1f2937;
-    width:250px;
-    padding:25px;
-    border-radius:12px;
-}
-
-.step-number{
-    font-size:30px;
-    color:#22c55e;
-    font-weight:bold;
-    margin-bottom:10px;
+.logout{
+background:#ef4444;margin-top:15px
 }
 
 footer{
-    text-align:center;
-    padding:25px;
-    background:#0b1120;
-    color:#aaa;
-}
-
-footer a{
-    color:#22c55e;
-    text-decoration:none;
+background:#0b1120;color:#aaa;text-align:center;padding:25px
 }
 </style>
 </head>
@@ -145,74 +71,153 @@ footer a{
 <body>
 
 <header>
-    <div class="logo">EARN10</div>
-    <div class="tagline">Refer • Play • Earn</div>
+<div class="logo">EARN10</div>
+<div class="tagline">Refer • Play • Earn</div>
 </header>
 
 <section class="hero">
-    <h1>Earn Rewards Online 💰</h1>
-    <p>Refer friends, complete eligible activities and collect rewards.</p>
-    <a href="#features" class="btn">Get Started 🚀</a>
+<h1>Earn Rewards Online 💰</h1>
+<p>Join EARN10 and start your rewards journey.</p>
+<a href="#auth" class="btn">Get Started 🚀</a>
 </section>
 
-<section class="cards" id="features">
+<section class="cards">
 
-    <div class="card">
-        <div class="icon">👥</div>
-        <h2>Refer & Earn</h2>
-        <p>Invite your friends using your referral link and earn eligible referral rewards.</p>
-    </div>
+<div class="card">
+<div class="icon">👥</div>
+<h2>Refer & Earn</h2>
+<p>Invite friends using your referral link.</p>
+</div>
 
-    <div class="card">
-        <div class="icon">🎮</div>
-        <h2>Play & Earn</h2>
-        <p>Enjoy simple games and activities while collecting points.</p>
-    </div>
+<div class="card">
+<div class="icon">🎮</div>
+<h2>Play & Earn</h2>
+<p>Enjoy activities and collect points.</p>
+</div>
 
-    <div class="card">
-        <div class="icon">💰</div>
-        <h2>Rewards Wallet</h2>
-        <p>Keep track of your points and eligible rewards in one place.</p>
-    </div>
+<div class="card">
+<div class="icon">💰</div>
+<h2>Rewards Wallet</h2>
+<p>Track your points and eligible rewards.</p>
+</div>
 
 </section>
 
-<section class="steps">
+<section class="auth" id="auth">
 
-    <h2>How EARN10 Works</h2>
+<div id="loginBox">
+<h2>Login 🔐</h2>
 
-    <div class="step-box">
+<input class="input" id="loginEmail"
+type="email" placeholder="Email">
 
-        <div class="step">
-            <div class="step-number">01</div>
-            <h3>Sign Up</h3>
-            <p>Create your EARN10 account.</p>
-        </div>
+<input class="input" id="loginPassword"
+type="password" placeholder="Password">
 
-        <div class="step">
-            <div class="step-number">02</div>
-            <h3>Refer Friends</h3>
-            <p>Share your referral link with friends.</p>
-        </div>
+<button class="btn" onclick="login()">Login</button>
 
-        <div class="step">
-            <div class="step-number">03</div>
-            <h3>Collect Rewards</h3>
-            <p>Earn eligible points and rewards.</p>
-        </div>
+<div class="switch">
+Don't have an account?
+<span onclick="showSignup()">Sign Up</span>
+</div>
+</div>
 
-    </div>
+<div id="signupBox">
+<h2>Create Account 📝</h2>
+
+<input class="input" id="signupName"
+type="text" placeholder="Full Name">
+
+<input class="input" id="signupEmail"
+type="email" placeholder="Email">
+
+<input class="input" id="signupPassword"
+type="password" placeholder="Password">
+
+<button class="btn" onclick="signup()">Create Account</button>
+
+<div class="switch">
+Already have an account?
+<span onclick="showLogin()">Login</span>
+</div>
+</div>
+
+</section>
+
+<section class="dashboard" id="dashboard">
+
+<h2>Welcome to EARN10 🎉</h2>
+
+<div class="balance">₹0</div>
+
+<p>Your current demo reward balance</p>
+
+<button class="btn logout" onclick="logout()">Logout</button>
 
 </section>
 
 <footer>
-    <p>© 2026 EARN10. All rights reserved.</p>
-    <p style="margin-top:8px;">
-        <a href="#">Privacy</a> •
-        <a href="#">Terms</a> •
-        <a href="#">Contact</a>
-    </p>
+<p>© 2026 EARN10. All rights reserved.</p>
 </footer>
+
+<script>
+
+function showSignup(){
+document.getElementById("loginBox").style.display="none";
+document.getElementById("signupBox").style.display="block";
+}
+
+function showLogin(){
+document.getElementById("signupBox").style.display="none";
+document.getElementById("loginBox").style.display="block";
+}
+
+function signup(){
+
+let name=document.getElementById("signupName").value;
+let email=document.getElementById("signupEmail").value;
+let password=document.getElementById("signupPassword").value;
+
+if(!name || !email || !password){
+alert("Please fill all fields");
+return;
+}
+
+localStorage.setItem("earn10_user",
+JSON.stringify({name,email,password}));
+
+alert("Account created successfully!");
+showLogin();
+}
+
+function login(){
+
+let email=document.getElementById("loginEmail").value;
+let password=document.getElementById("loginPassword").value;
+
+let user=JSON.parse(localStorage.getItem("earn10_user"));
+
+if(!user){
+alert("Please create an account first.");
+return;
+}
+
+if(email===user.email && password===user.password){
+
+document.getElementById("auth").style.display="none";
+document.getElementById("dashboard").style.display="block";
+
+}else{
+alert("Email or password is incorrect.");
+}
+}
+
+function logout(){
+document.getElementById("dashboard").style.display="none";
+document.getElementById("auth").style.display="block";
+}
+
+</script>
 
 </body>
 </html>
