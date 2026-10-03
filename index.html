@@ -8,42 +8,34 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f4f7fb;color:#222}
-header{background:#111827;color:white;padding:22px;text-align:center}
+header{background:#111827;color:white;padding:20px;text-align:center}
 .logo{font-size:36px;font-weight:bold;color:#22c55e}
-.tagline{margin-top:5px;color:#ddd}
+.tagline{color:#ddd;margin-top:5px}
 
-.hero{text-align:center;background:white;padding:55px 20px}
-.hero h1{font-size:36px;margin-bottom:12px}
-.hero p{color:#666;margin-bottom:25px}
+.hero{text-align:center;background:white;padding:45px 20px}
+.hero h1{font-size:35px;margin-bottom:12px}
+.hero p{color:#666;margin-bottom:22px}
 
 .btn{
-display:inline-block;background:#22c55e;color:white;
-padding:13px 25px;border:0;border-radius:10px;
-font-weight:bold;cursor:pointer;text-decoration:none
+border:0;background:#22c55e;color:white;padding:13px 24px;
+border-radius:9px;font-weight:bold;cursor:pointer
 }
-
-.cards{
-display:flex;justify-content:center;gap:20px;
-flex-wrap:wrap;padding:35px 20px
-}
-.card{
-background:white;width:280px;padding:25px;text-align:center;
-border-radius:15px;box-shadow:0 4px 15px #0001
-}
-.icon{font-size:42px;margin-bottom:10px}
-.card p{color:#666;margin-top:10px;line-height:1.5}
 
 .auth{
-background:white;width:350px;max-width:90%;
-margin:20px auto 45px;padding:30px;
-border-radius:15px;box-shadow:0 4px 15px #0001
+background:white;width:360px;max-width:92%;
+margin:25px auto;padding:28px;border-radius:15px;
+box-shadow:0 4px 15px #0001
 }
-.auth h2{text-align:center;margin-bottom:20px}
+
+.auth h2{text-align:center;margin-bottom:18px}
+
 .input{
-width:100%;padding:13px;margin:8px 0;
+width:100%;padding:13px;margin:7px 0;
 border:1px solid #ddd;border-radius:8px
 }
+
 .auth .btn{width:100%;margin-top:10px}
+
 .switch{text-align:center;margin-top:15px;color:#666}
 .switch span{color:#16a34a;font-weight:bold;cursor:pointer}
 
@@ -51,19 +43,107 @@ border:1px solid #ddd;border-radius:8px
 
 .dashboard{
 display:none;
-background:#111827;color:white;
-padding:35px 20px;text-align:center
+padding:30px 18px;
+max-width:1000px;
+margin:auto
 }
-.balance{
-font-size:34px;color:#22c55e;font-weight:bold;
-margin:15px
+
+.welcome{
+text-align:center;
+margin-bottom:25px
 }
+
+.welcome h2{font-size:28px}
+
+.stats{
+display:flex;
+gap:15px;
+justify-content:center;
+flex-wrap:wrap
+}
+
+.stat{
+background:white;
+width:210px;
+padding:22px;
+text-align:center;
+border-radius:14px;
+box-shadow:0 4px 15px #0001
+}
+
+.stat .number{
+font-size:30px;
+font-weight:bold;
+color:#22c55e;
+margin-top:8px
+}
+
+.referral{
+background:white;
+margin-top:22px;
+padding:25px;
+border-radius:14px;
+box-shadow:0 4px 15px #0001
+}
+
+.referral h3{margin-bottom:10px}
+
+.referral p{
+color:#666;
+margin-bottom:15px
+}
+
+.linkbox{
+display:flex;
+gap:8px;
+margin-bottom:12px
+}
+
+.linkbox input{
+flex:1;
+padding:12px;
+border:1px solid #ddd;
+border-radius:8px;
+font-size:14px
+}
+
+.copy{background:#2563eb}
+
+.share{background:#7c3aed}
+
 .logout{
-background:#ef4444;margin-top:15px
+background:#ef4444;
+margin-top:20px
+}
+
+.features{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin-top:22px
+}
+
+.feature{
+background:white;
+width:210px;
+padding:22px;
+text-align:center;
+border-radius:14px;
+box-shadow:0 4px 15px #0001
+}
+
+.feature div{
+font-size:38px;
+margin-bottom:10px
 }
 
 footer{
-background:#0b1120;color:#aaa;text-align:center;padding:25px
+background:#0b1120;
+color:#aaa;
+text-align:center;
+padding:25px;
+margin-top:30px
 }
 </style>
 </head>
@@ -77,30 +157,7 @@ background:#0b1120;color:#aaa;text-align:center;padding:25px
 
 <section class="hero">
 <h1>Earn Rewards Online 💰</h1>
-<p>Join EARN10 and start your rewards journey.</p>
-<a href="#auth" class="btn">Get Started 🚀</a>
-</section>
-
-<section class="cards">
-
-<div class="card">
-<div class="icon">👥</div>
-<h2>Refer & Earn</h2>
-<p>Invite friends using your referral link.</p>
-</div>
-
-<div class="card">
-<div class="icon">🎮</div>
-<h2>Play & Earn</h2>
-<p>Enjoy activities and collect points.</p>
-</div>
-
-<div class="card">
-<div class="icon">💰</div>
-<h2>Rewards Wallet</h2>
-<p>Track your points and eligible rewards.</p>
-</div>
-
+<p>Refer friends, play and collect eligible rewards.</p>
 </section>
 
 <section class="auth" id="auth">
@@ -146,11 +203,74 @@ Already have an account?
 
 <section class="dashboard" id="dashboard">
 
+<div class="welcome">
 <h2>Welcome to EARN10 🎉</h2>
+<p>Your rewards dashboard</p>
+</div>
 
-<div class="balance">₹0</div>
+<div class="stats">
 
-<p>Your current demo reward balance</p>
+<div class="stat">
+💰
+<p>Wallet Balance</p>
+<div class="number" id="balance">₹0</div>
+</div>
+
+<div class="stat">
+👥
+<p>Total Referrals</p>
+<div class="number" id="referrals">0</div>
+</div>
+
+<div class="stat">
+🎁
+<p>Referral Reward</p>
+<div class="number">₹10</div>
+</div>
+
+</div>
+
+<div class="referral">
+
+<h3>🔗 Your Referral Link</h3>
+
+<p>Share this link with your friends.</p>
+
+<div class="linkbox">
+
+<input id="refLink" readonly>
+
+<button class="btn copy" onclick="copyLink()">Copy</button>
+
+</div>
+
+<button class="btn share" onclick="shareLink()">
+📤 Share Referral Link
+</button>
+
+</div>
+
+<div class="features">
+
+<div class="feature">
+<div>🎮</div>
+<h3>Games</h3>
+<p>Play eligible games.</p>
+</div>
+
+<div class="feature">
+<div>🏆</div>
+<h3>Leaderboard</h3>
+<p>See top members.</p>
+</div>
+
+<div class="feature">
+<div>💸</div>
+<h3>Withdrawal</h3>
+<p>Manage eligible rewards.</p>
+</div>
+
+</div>
 
 <button class="btn logout" onclick="logout()">Logout</button>
 
@@ -172,6 +292,10 @@ document.getElementById("signupBox").style.display="none";
 document.getElementById("loginBox").style.display="block";
 }
 
+function generateCode(){
+return "E10-" + Math.random().toString(36).substring(2,8).toUpperCase();
+}
+
 function signup(){
 
 let name=document.getElementById("signupName").value;
@@ -183,8 +307,16 @@ alert("Please fill all fields");
 return;
 }
 
-localStorage.setItem("earn10_user",
-JSON.stringify({name,email,password}));
+let user={
+name:name,
+email:email,
+password:password,
+code:generateCode(),
+balance:0,
+referrals:0
+};
+
+localStorage.setItem("earn10_user",JSON.stringify(user));
 
 alert("Account created successfully!");
 showLogin();
@@ -207,14 +339,59 @@ if(email===user.email && password===user.password){
 document.getElementById("auth").style.display="none";
 document.getElementById("dashboard").style.display="block";
 
+loadDashboard(user);
+
 }else{
 alert("Email or password is incorrect.");
 }
 }
 
+function loadDashboard(user){
+
+document.getElementById("balance").innerText="₹"+user.balance;
+document.getElementById("referrals").innerText=user.referrals;
+
+let base=window.location.href.split("?")[0];
+
+document.getElementById("refLink").value=
+base+"?ref="+user.code;
+}
+
+function copyLink(){
+
+let input=document.getElementById("refLink");
+
+navigator.clipboard.writeText(input.value);
+
+alert("Referral link copied!");
+}
+
+function shareLink(){
+
+let link=document.getElementById("refLink").value;
+
+if(navigator.share){
+
+navigator.share({
+title:"Join EARN10",
+text:"Join EARN10 and earn eligible rewards!",
+url:link
+});
+
+}else{
+
+navigator.clipboard.writeText(link);
+
+alert("Referral link copied! You can share it with your friends.");
+
+}
+}
+
 function logout(){
+
 document.getElementById("dashboard").style.display="none";
 document.getElementById("auth").style.display="block";
+
 }
 
 </script>
