@@ -123,6 +123,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
+      margin-bottom: 20px;
     }
 
     .stat {
@@ -187,10 +188,9 @@
   <div id="headerUser"></div>
 </header>
 
-
 <div class="container">
 
-  <!-- AUTH SECTION -->
+  <!-- AUTH -->
   <div id="authSection">
 
     <div class="card">
@@ -214,7 +214,6 @@
       <div id="loginMessage"></div>
 
     </div>
-
 
     <div class="card">
 
@@ -256,7 +255,9 @@
         Welcome, <span id="displayName">User</span> 👋
       </h2>
 
-      <button class="danger" onclick="logout()">Logout</button>
+      <button class="danger" onclick="logout()">
+        Logout
+      </button>
 
     </div>
 
@@ -292,7 +293,9 @@
       <h3>Your Referral Code</h3>
 
       <div class="refbox">
-        <strong id="referralCode">Generating...</strong>
+        <strong id="referralCode">
+          Generating...
+        </strong>
       </div>
 
       <h3>Your Referral Link</h3>
@@ -301,9 +304,14 @@
         Generating...
       </div>
 
-      <button onclick="copyReferral()">Copy Link</button>
+      <button onclick="copyReferral()">
+        Copy Link
+      </button>
 
-      <button class="secondary" onclick="shareReferral()">
+      <button
+        class="secondary"
+        onclick="shareReferral()"
+      >
         Share
       </button>
 
@@ -321,19 +329,28 @@
         <div class="game">
           <h3>Tap Challenge</h3>
           <p>Play and collect points.</p>
-          <button onclick="tapGame()">Play</button>
+
+          <button onclick="tapGame()">
+            Play
+          </button>
         </div>
 
         <div class="game">
           <h3>Daily Bonus</h3>
           <p>Daily reward.</p>
-          <button onclick="dailyBonus()">Claim</button>
+
+          <button onclick="dailyBonus()">
+            Claim
+          </button>
         </div>
 
         <div class="game">
           <h3>Quiz</h3>
           <p>Answer questions.</p>
-          <button onclick="quizGame()">Play</button>
+
+          <button onclick="quizGame()">
+            Play
+          </button>
         </div>
 
       </div>
@@ -356,7 +373,10 @@
 
       <br>
 
-      <button class="gray" onclick="withdrawInfo()">
+      <button
+        class="gray"
+        onclick="withdrawInfo()"
+      >
         Withdraw
       </button>
 
@@ -378,18 +398,22 @@
   const SUPABASE_URL =
     "https://rwwihwmlsdqafehtywdl.supabase.co";
 
+  /*
+    IMPORTANT:
+    Yahan apni CURRENT working Supabase
+    Publishable Key paste karo.
+  */
+
   const SUPABASE_KEY =
     "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
 
 
-  const { createClient } =
-    supabase;
+  const { createClient } = supabase;
 
-  const db =
-    createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+  const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
   /* ==========================================
@@ -398,7 +422,8 @@
 
   function showMessage(id, text, type = "") {
 
-    const box = document.getElementById(id);
+    const box =
+      document.getElementById(id);
 
     box.innerHTML =
       `<div class="message ${type}">
@@ -420,19 +445,114 @@
 
 
   /* ==========================================
+     GET REFERRAL CODE FROM URL
+     ========================================== */
+
+  function getReferralCodeFromURL() {
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const ref =
+      params.get("ref");
+
+    if (!ref) {
+      return null;
+    }
+
+    return ref.trim().toUpperCase();
+  }
+
+
+  /* ==========================================
+     SAVE REFERRAL CODE
+     ========================================== */
+
+  function saveReferralCode() {
+
+    const ref =
+      getReferralCodeFromURL();
+
+    if (ref) {
+
+      localStorage.setItem(
+        "earn10_referral_code",
+        ref
+      );
+
+      return ref;
+    }
+
+    return localStorage.getItem(
+      "earn10_referral_code"
+    );
+  }
+
+
+  /* ==========================================
+     FIND REFERRER
+     ========================================== */
+
+  async function findReferrerByCode(
+    referralCode
+  ) {
+
+    if (!referralCode) {
+      return null;
+    }
+
+    const {
+      data,
+      error
+    } = await db
+      .from("users")
+      .select("user_id, referral_code")
+      .eq(
+        "referral_code",
+        referralCode
+      )
+      .maybeSingle();
+
+
+    if (error) {
+
+      console.error(
+        "Referrer lookup error:",
+        error
+      );
+
+      return null;
+    }
+
+
+    return data || null;
+  }
+
+
+  /* ==========================================
      SIGNUP
      ========================================== */
 
   async function signup() {
 
     const name =
-      document.getElementById("signupName").value.trim();
+      document
+        .getElementById("signupName")
+        .value
+        .trim();
 
     const email =
-      document.getElementById("signupEmail").value.trim();
+      document
+        .getElementById("signupEmail")
+        .value
+        .trim();
 
     const password =
-      document.getElementById("signupPassword").value;
+      document
+        .getElementById("signupPassword")
+        .value;
 
 
     if (!name || !email || !password) {
@@ -467,7 +587,31 @@
 
     try {
 
-      const { data, error } =
+      /*
+        Check referral code BEFORE signup.
+      */
+
+      const referralCode =
+        saveReferralCode();
+
+
+      let referrer = null;
+
+
+      if (referralCode) {
+
+        referrer =
+          await findReferrerByCode(
+            referralCode
+          );
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
         await db.auth.signUp({
 
           email: email,
@@ -489,7 +633,8 @@
 
         showMessage(
           "signupMessage",
-          "Supabase Error: " + error.message,
+          "Supabase Error: " +
+          error.message,
           "error"
         );
 
@@ -510,8 +655,12 @@
 
 
       /*
+        IMPORTANT:
+        Auth trigger automatically creates
+        the profile row when the user is created.
+
         If email confirmation is ON,
-        session may be null here.
+        session may be null.
       */
 
       if (!data.session) {
@@ -522,18 +671,33 @@
           "success"
         );
 
+        /*
+          Store referrer information temporarily
+          for the next login.
+        */
+
+        if (referrer) {
+
+          localStorage.setItem(
+            "pending_referrer_id",
+            referrer.user_id
+          );
+
+        }
+
         return;
       }
 
 
       /*
         If confirmation is OFF,
-        session exists and profile can be created.
+        create/update profile.
       */
 
       await createUserProfile(
         data.user,
-        name
+        name,
+        referrer
       );
 
 
@@ -546,8 +710,9 @@
 
       await loadDashboard();
 
-
     } catch (err) {
+
+      console.error(err);
 
       showMessage(
         "signupMessage",
@@ -564,20 +729,32 @@
      CREATE PROFILE
      ========================================== */
 
-  async function createUserProfile(user, name) {
+  async function createUserProfile(
+    user,
+    name,
+    referrer = null
+  ) {
 
-    if (!user) return;
+    if (!user) {
+      return null;
+    }
 
 
     /*
-      First check whether profile already exists.
+      Check existing profile.
     */
 
-    const { data: existing, error: selectError } =
+    const {
+      data: existing,
+      error: selectError
+    } =
       await db
         .from("users")
         .select("*")
-        .eq("user_id", user.id)
+        .eq(
+          "user_id",
+          user.id
+        )
         .maybeSingle();
 
 
@@ -591,14 +768,48 @@
     }
 
 
-    /*
-      If profile already exists,
-      don't create duplicate.
-    */
-
     if (existing) {
 
       return existing;
+
+    }
+
+
+    /*
+      If referral was saved while
+      email confirmation was pending,
+      recover it here.
+    */
+
+    if (!referrer) {
+
+      const pendingId =
+        localStorage.getItem(
+          "pending_referrer_id"
+        );
+
+
+      if (pendingId) {
+
+        referrer = {
+          user_id: pendingId
+        };
+
+      }
+
+    }
+
+
+    /*
+      Prevent self referral.
+    */
+
+    if (
+      referrer &&
+      referrer.user_id === user.id
+    ) {
+
+      referrer = null;
 
     }
 
@@ -611,15 +822,21 @@
 
       user_id: user.id,
 
-      name: name ||
-            user.user_metadata?.display_name ||
-            "User",
+      name:
+        name ||
+        user.user_metadata?.display_name ||
+        "User",
 
-      email: user.email,
+      email:
+        user.email,
 
-      referral_code: referralCode,
+      referral_code:
+        referralCode,
 
-      referred_by: null,
+      referred_by:
+        referrer
+          ? referrer.user_id
+          : null,
 
       balance: 0,
 
@@ -628,7 +845,10 @@
     };
 
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await db
         .from("users")
         .insert(profile)
@@ -643,14 +863,22 @@
         error
       );
 
-      /*
-        Dashboard can still open even if
-        profile insert fails.
-      */
-
       return null;
 
     }
+
+
+    /*
+      Referral has now been saved.
+    */
+
+    localStorage.removeItem(
+      "earn10_referral_code"
+    );
+
+    localStorage.removeItem(
+      "pending_referrer_id"
+    );
 
 
     return data;
@@ -665,10 +893,15 @@
   async function login() {
 
     const email =
-      document.getElementById("loginEmail").value.trim();
+      document
+        .getElementById("loginEmail")
+        .value
+        .trim();
 
     const password =
-      document.getElementById("loginPassword").value;
+      document
+        .getElementById("loginPassword")
+        .value;
 
 
     if (!email || !password) {
@@ -691,7 +924,10 @@
 
     try {
 
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await db.auth.signInWithPassword({
 
           email: email,
@@ -705,7 +941,8 @@
 
         showMessage(
           "loginMessage",
-          "Login Error: " + error.message,
+          "Login Error: " +
+          error.message,
           "error"
         );
 
@@ -719,10 +956,6 @@
         "success"
       );
 
-
-      /*
-        Make sure profile exists.
-      */
 
       await createUserProfile(
         data.user,
@@ -756,18 +989,21 @@
       data: {
         session
       }
-    } = await db.auth.getSession();
+    } =
+      await db.auth.getSession();
 
 
     if (!session) {
 
       document
         .getElementById("authSection")
-        .classList.remove("hidden");
+        .classList
+        .remove("hidden");
 
       document
         .getElementById("dashboard")
-        .classList.add("hidden");
+        .classList
+        .add("hidden");
 
       return;
 
@@ -778,22 +1014,18 @@
       session.user;
 
 
-    /*
-      Get profile
-    */
-
-    let { data: profile } =
+    let {
+      data: profile
+    } =
       await db
         .from("users")
         .select("*")
-        .eq("user_id", user.id)
+        .eq(
+          "user_id",
+          user.id
+        )
         .maybeSingle();
 
-
-    /*
-      If profile doesn't exist,
-      create it.
-    */
 
     if (!profile) {
 
@@ -808,11 +1040,13 @@
 
     document
       .getElementById("authSection")
-      .classList.add("hidden");
+      .classList
+      .add("hidden");
 
     document
       .getElementById("dashboard")
-      .classList.remove("hidden");
+      .classList
+      .remove("hidden");
 
 
     document
@@ -832,19 +1066,24 @@
       document
         .getElementById("balance")
         .textContent =
-        Number(profile.balance || 0);
+        Number(
+          profile.balance || 0
+        );
 
 
       document
         .getElementById("referralCount")
         .textContent =
-        Number(profile.referral_count || 0);
+        Number(
+          profile.referral_count || 0
+        );
 
 
       document
         .getElementById("referralCode")
         .textContent =
-        profile.referral_code || "Not generated";
+        profile.referral_code ||
+        "Not generated";
 
 
       if (profile.referral_code) {
@@ -865,21 +1104,13 @@
 
       }
 
-    } else {
-
-      document
-        .getElementById("displayName")
-        .textContent =
-        user.user_metadata?.display_name ||
-        "User";
-
     }
 
   }
 
 
   /* ==========================================
-     COPY REFERRAL
+     COPY
      ========================================== */
 
   async function copyReferral() {
@@ -890,10 +1121,14 @@
         .textContent;
 
 
-    if (!link ||
-        link === "Generating...") {
+    if (
+      !link ||
+      link === "Generating..."
+    ) {
 
-      alert("Referral link is not ready yet.");
+      alert(
+        "Referral link is not ready yet."
+      );
 
       return;
 
@@ -902,9 +1137,13 @@
 
     try {
 
-      await navigator.clipboard.writeText(link);
+      await navigator.clipboard.writeText(
+        link
+      );
 
-      alert("Referral link copied!");
+      alert(
+        "Referral link copied!"
+      );
 
     } catch {
 
@@ -939,7 +1178,8 @@
 
         await navigator.share({
 
-          title: "Join EARN10",
+          title:
+            "Join EARN10",
 
           text:
             "Join EARN10 and earn rewards!",
@@ -950,7 +1190,7 @@
 
       } catch {
 
-        // User cancelled share.
+        // cancelled
 
       }
 
@@ -1021,11 +1261,17 @@
 
     showMessage(
       "withdrawMessage",
-      "Withdrawal system is not connected yet.",
-      ""
+      "Withdrawal system is not connected yet."
     );
 
   }
+
+
+  /* ==========================================
+     SAVE REFERRAL ON PAGE OPEN
+     ========================================== */
+
+  saveReferralCode();
 
 
   /* ==========================================
@@ -1036,11 +1282,6 @@
     async (event, session) => {
 
       if (session) {
-
-        /*
-          Delay avoids Supabase auth
-          event timing issues.
-        */
 
         setTimeout(
           () => loadDashboard(),
