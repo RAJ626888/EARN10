@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>EARN10 - Refer • Play • Earn</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -16,11 +17,11 @@
     }
 
     body {
-      background: #f4f7fb;
+      background: #f3f6f9;
       color: #222;
     }
 
-    .header {
+    header {
       background: #111827;
       color: white;
       padding: 18px 25px;
@@ -29,102 +30,83 @@
       align-items: center;
     }
 
-    .logo {
+    header h1 {
       font-size: 25px;
-      font-weight: bold;
     }
 
-    .logo span {
-      color: #22c55e;
+    header span {
+      font-size: 13px;
+      color: #cbd5e1;
     }
 
     .container {
       max-width: 1000px;
       margin: 30px auto;
-      padding: 20px;
+      padding: 0 15px;
     }
 
     .card {
       background: white;
+      border-radius: 15px;
       padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
       margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
     }
 
     h2 {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+    }
+
+    h3 {
+      margin-bottom: 10px;
     }
 
     input {
       width: 100%;
       padding: 13px;
       margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 9px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
       font-size: 15px;
     }
 
     button {
       border: none;
-      padding: 12px 18px;
-      border-radius: 9px;
-      background: #22c55e;
+      background: #16a34a;
       color: white;
+      padding: 12px 18px;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
-      margin-top: 8px;
+      font-size: 15px;
+      margin: 5px 5px 5px 0;
     }
 
     button:hover {
-      background: #16a34a;
+      opacity: 0.9;
     }
 
     .secondary {
-      background: #374151;
+      background: #2563eb;
     }
 
     .danger {
-      background: #ef4444;
+      background: #dc2626;
+    }
+
+    .gray {
+      background: #64748b;
     }
 
     .hidden {
       display: none;
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .stat {
-      background: #f8fafc;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-    }
-
-    .stat h3 {
-      font-size: 25px;
-      color: #16a34a;
-      margin-top: 8px;
-    }
-
-    .refbox {
-      background: #ecfdf5;
-      padding: 15px;
-      border-radius: 10px;
-      word-break: break-all;
-      margin: 10px 0;
-    }
-
     .message {
       margin-top: 12px;
       padding: 12px;
       border-radius: 8px;
-      background: #f3f4f6;
-      word-break: break-word;
+      background: #e0f2fe;
+      color: #075985;
     }
 
     .error {
@@ -137,9 +119,58 @@
       color: #166534;
     }
 
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .stat {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 25px;
+      margin-top: 8px;
+    }
+
+    .refbox {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 10px;
+      word-break: break-all;
+      margin: 10px 0;
+      border: 1px solid #e5e7eb;
+    }
+
+    .games {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .game {
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
     @media(max-width:700px) {
-      .stats {
+      .stats,
+      .games {
         grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        gap: 5px;
       }
     }
   </style>
@@ -147,266 +178,270 @@
 
 <body>
 
-  <div class="header">
-    <div class="logo">EARN<span>10</span></div>
-    <div>Refer • Play • Earn</div>
+<header>
+  <div>
+    <h1>EARN10</h1>
+    <span>Refer • Play • Earn</span>
   </div>
 
+  <div id="headerUser"></div>
+</header>
 
-  <!-- LOGIN / SIGNUP -->
 
-  <div id="authSection" class="container">
+<div class="container">
+
+  <!-- AUTH SECTION -->
+  <div id="authSection">
 
     <div class="card">
+
       <h2>Login</h2>
 
       <input
-        id="loginEmail"
         type="email"
+        id="loginEmail"
         placeholder="Email"
       >
 
       <input
-        id="loginPassword"
         type="password"
+        id="loginPassword"
         placeholder="Password"
       >
 
-      <button onclick="login()">
-        Login
-      </button>
+      <button onclick="login()">Login</button>
 
-      <div id="loginMessage" class="message"></div>
+      <div id="loginMessage"></div>
+
     </div>
 
 
     <div class="card">
+
       <h2>Create Account</h2>
 
       <input
-        id="signupName"
         type="text"
+        id="signupName"
         placeholder="Your Name"
       >
 
       <input
-        id="signupEmail"
         type="email"
+        id="signupEmail"
         placeholder="Email"
       >
 
       <input
-        id="signupPassword"
         type="password"
+        id="signupPassword"
         placeholder="Password"
       >
 
-      <button onclick="signup()">
-        Create Account
-      </button>
+      <button onclick="signup()">Create Account</button>
 
-      <div id="signupMessage" class="message"></div>
+      <div id="signupMessage"></div>
+
     </div>
 
   </div>
 
 
   <!-- DASHBOARD -->
-
-  <div id="dashboard" class="container hidden">
+  <div id="dashboard" class="hidden">
 
     <div class="card">
 
       <h2>
-        Welcome,
-        <span id="userName">User</span> 👋
+        Welcome, <span id="displayName">User</span> 👋
       </h2>
 
-      <p id="userEmail"></p>
-
-      <button
-        class="danger"
-        onclick="logout()"
-      >
-        Logout
-      </button>
+      <button class="danger" onclick="logout()">Logout</button>
 
     </div>
 
+
+    <!-- STATS -->
 
     <div class="stats">
 
       <div class="stat">
-        <p>Wallet Balance</p>
-        <h3>
-          ₹<span id="balance">0</span>
-        </h3>
+        Wallet Balance
+        <strong>₹<span id="balance">0</span></strong>
       </div>
 
       <div class="stat">
-        <p>Total Referrals</p>
-        <h3 id="referralCount">0</h3>
+        Total Referrals
+        <strong id="referralCount">0</strong>
       </div>
 
       <div class="stat">
-        <p>Referral Reward</p>
-        <h3>₹10</h3>
+        Referral Reward
+        <strong>₹10</strong>
       </div>
 
     </div>
 
 
+    <!-- REFERRAL -->
+
     <div class="card">
 
-      <h2>🎁 Your Referral</h2>
+      <h2>Your Referral</h2>
 
-      <p>Your Referral Code:</p>
+      <h3>Your Referral Code</h3>
 
       <div class="refbox">
-        <strong id="referralCode">
-          Loading...
-        </strong>
+        <strong id="referralCode">Generating...</strong>
       </div>
 
-      <p>Your Referral Link:</p>
+      <h3>Your Referral Link</h3>
 
-      <div
-        class="refbox"
-        id="referralLink"
-      >
-        Loading...
+      <div class="refbox" id="referralLink">
+        Generating...
       </div>
 
-      <button onclick="copyReferral()">
-        Copy Link
-      </button>
+      <button onclick="copyReferral()">Copy Link</button>
 
-      <button
-        class="secondary"
-        onclick="shareReferral()"
-      >
+      <button class="secondary" onclick="shareReferral()">
         Share
       </button>
 
     </div>
 
 
+    <!-- GAMES -->
+
     <div class="card">
 
-      <h2>🎮 Games</h2>
+      <h2>Games 🎮</h2>
 
-      <p>
-        Games and rewards will be added here.
-      </p>
+      <div class="games">
 
-      <button
-        onclick="alert('Game coming soon!')"
-      >
-        Play Game
-      </button>
+        <div class="game">
+          <h3>Tap Challenge</h3>
+          <p>Play and collect points.</p>
+          <button onclick="tapGame()">Play</button>
+        </div>
+
+        <div class="game">
+          <h3>Daily Bonus</h3>
+          <p>Daily reward.</p>
+          <button onclick="dailyBonus()">Claim</button>
+        </div>
+
+        <div class="game">
+          <h3>Quiz</h3>
+          <p>Answer questions.</p>
+          <button onclick="quizGame()">Play</button>
+        </div>
+
+      </div>
+
+      <div id="gameMessage"></div>
 
     </div>
 
 
+    <!-- WITHDRAW -->
+
     <div class="card">
 
-      <h2>💰 Withdraw</h2>
+      <h2>Withdraw 💰</h2>
 
       <p>
-        Withdrawal system will be connected
-        after wallet verification.
+        Withdrawal feature will be connected after the wallet
+        and payment system are completed.
       </p>
 
-      <button
-        onclick="alert('Withdrawal feature coming soon!')"
-      >
+      <br>
+
+      <button class="gray" onclick="withdrawInfo()">
         Withdraw
       </button>
+
+      <div id="withdrawMessage"></div>
 
     </div>
 
   </div>
 
+</div>
+
 
 <script>
 
-  // =========================================
-  // SUPABASE SETTINGS
-  // =========================================
+  /* ==========================================
+     SUPABASE CONFIG
+     ========================================== */
 
   const SUPABASE_URL =
     "https://rwwihwmlsdqafehtywdl.supabase.co";
-
-
-  /*
-    IMPORTANT:
-
-    YAHAN apni Supabase Publishable key paste karo.
-
-    Example:
-
-    const SUPABASE_KEY = "sb_publishable_xxxxxxxxx";
-
-    Apni key chat me mat bhejna.
-  */
 
   const SUPABASE_KEY =
     "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
 
 
-  // =========================================
-  // SUPABASE CLIENT
-  // =========================================
+  const { createClient } =
+    supabase;
 
-  const supabaseClient =
-    window.supabase.createClient(
+  const db =
+    createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
 
 
-  // =========================================
-  // SIGNUP
-  // =========================================
+  /* ==========================================
+     HELPERS
+     ========================================== */
+
+  function showMessage(id, text, type = "") {
+
+    const box = document.getElementById(id);
+
+    box.innerHTML =
+      `<div class="message ${type}">
+        ${text}
+      </div>`;
+  }
+
+
+  function generateReferralCode() {
+
+    const random =
+      Math.random()
+        .toString(36)
+        .substring(2, 8)
+        .toUpperCase();
+
+    return "E10-" + random;
+  }
+
+
+  /* ==========================================
+     SIGNUP
+     ========================================== */
 
   async function signup() {
 
     const name =
-      document
-      .getElementById("signupName")
-      .value
-      .trim();
+      document.getElementById("signupName").value.trim();
 
     const email =
-      document
-      .getElementById("signupEmail")
-      .value
-      .trim();
+      document.getElementById("signupEmail").value.trim();
 
     const password =
-      document
-      .getElementById("signupPassword")
-      .value;
-
-    const message =
-      document
-      .getElementById("signupMessage");
-
-
-    message.className =
-      "message";
-
-    message.innerText =
-      "Connecting to Supabase...";
+      document.getElementById("signupPassword").value;
 
 
     if (!name || !email || !password) {
 
-      message.className =
-        "message error";
-
-      message.innerText =
-        "Please fill all fields.";
+      showMessage(
+        "signupMessage",
+        "Please fill all fields.",
+        "error"
+      );
 
       return;
     }
@@ -414,20 +449,26 @@
 
     if (password.length < 6) {
 
-      message.className =
-        "message error";
-
-      message.innerText =
-        "Password must be at least 6 characters.";
+      showMessage(
+        "signupMessage",
+        "Password must be at least 6 characters.",
+        "error"
+      );
 
       return;
     }
 
 
+    showMessage(
+      "signupMessage",
+      "Creating account..."
+    );
+
+
     try {
 
-      const result =
-        await supabaseClient.auth.signUp({
+      const { data, error } =
+        await db.auth.signUp({
 
           email: email,
 
@@ -436,7 +477,7 @@
           options: {
 
             data: {
-              name: name
+              display_name: name
             }
 
           }
@@ -444,208 +485,214 @@
         });
 
 
-      console.log(
-        "SUPABASE DATA:",
-        result.data
-      );
+      if (error) {
 
-      console.log(
-        "SUPABASE ERROR:",
-        result.error
-      );
-
-
-      if (result.error) {
-
-        message.className =
-          "message error";
-
-        message.innerText =
-          "Supabase Error: " +
-          result.error.message;
+        showMessage(
+          "signupMessage",
+          "Supabase Error: " + error.message,
+          "error"
+        );
 
         return;
       }
 
 
-      message.className =
-        "message success";
+      if (!data.user) {
 
-      message.innerText =
-        "Account created successfully! " +
-        "Check your email for confirmation if required.";
-
-
-      // Create profile only when a user exists
-      if (result.data.user) {
-
-        await createUserProfile(
-          result.data.user,
-          name
+        showMessage(
+          "signupMessage",
+          "Account could not be created.",
+          "error"
         );
 
+        return;
       }
 
-    }
-    catch (error) {
 
-      console.error(
-        "JAVASCRIPT ERROR:",
-        error
+      /*
+        If email confirmation is ON,
+        session may be null here.
+      */
+
+      if (!data.session) {
+
+        showMessage(
+          "signupMessage",
+          "Account created successfully! Check your email for confirmation.",
+          "success"
+        );
+
+        return;
+      }
+
+
+      /*
+        If confirmation is OFF,
+        session exists and profile can be created.
+      */
+
+      await createUserProfile(
+        data.user,
+        name
       );
 
 
-      message.className =
-        "message error";
+      showMessage(
+        "signupMessage",
+        "Account created successfully!",
+        "success"
+      );
 
-      message.innerText =
-        "Error: " +
-        error.message;
+
+      await loadDashboard();
+
+
+    } catch (err) {
+
+      showMessage(
+        "signupMessage",
+        "Error: " + err.message,
+        "error"
+      );
 
     }
 
   }
 
 
-  // =========================================
-  // CREATE USER PROFILE
-  // =========================================
+  /* ==========================================
+     CREATE PROFILE
+     ========================================== */
 
-  async function createUserProfile(
-    user,
-    name
-  ) {
+  async function createUserProfile(user, name) {
+
+    if (!user) return;
+
+
+    /*
+      First check whether profile already exists.
+    */
+
+    const { data: existing, error: selectError } =
+      await db
+        .from("users")
+        .select("*")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+
+    if (selectError) {
+
+      console.log(
+        "Profile select error:",
+        selectError
+      );
+
+    }
+
+
+    /*
+      If profile already exists,
+      don't create duplicate.
+    */
+
+    if (existing) {
+
+      return existing;
+
+    }
+
 
     const referralCode =
-      createReferralCode();
+      generateReferralCode();
+
+
+    const profile = {
+
+      user_id: user.id,
+
+      name: name ||
+            user.user_metadata?.display_name ||
+            "User",
+
+      email: user.email,
+
+      referral_code: referralCode,
+
+      referred_by: null,
+
+      balance: 0,
+
+      referral_count: 0
+
+    };
 
 
     const { data, error } =
-      await supabaseClient
-      .from("users")
-      .insert({
-
-        id: user.id,
-
-        name: name,
-
-        email: user.email,
-
-        referral_code: referralCode,
-
-        balance: 0,
-
-        referral_count: 0
-
-      })
-      .select();
-
-
-    console.log(
-      "PROFILE DATA:",
-      data
-    );
-
-    console.log(
-      "PROFILE ERROR:",
-      error
-    );
+      await db
+        .from("users")
+        .insert(profile)
+        .select()
+        .single();
 
 
     if (error) {
 
       console.error(
-        "Profile creation error:",
-        error.message
+        "Profile insert error:",
+        error
       );
 
-    }
+      /*
+        Dashboard can still open even if
+        profile insert fails.
+      */
 
-  }
-
-
-  // =========================================
-  // REFERRAL CODE
-  // =========================================
-
-  function createReferralCode() {
-
-    const chars =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-    let code =
-      "E10-";
-
-
-    for (
-      let i = 0;
-      i < 6;
-      i++
-    ) {
-
-      code +=
-        chars[
-          Math.floor(
-            Math.random() *
-            chars.length
-          )
-        ];
+      return null;
 
     }
 
 
-    return code;
+    return data;
 
   }
 
 
-  // =========================================
-  // LOGIN
-  // =========================================
+  /* ==========================================
+     LOGIN
+     ========================================== */
 
   async function login() {
 
     const email =
-      document
-      .getElementById("loginEmail")
-      .value
-      .trim();
+      document.getElementById("loginEmail").value.trim();
 
     const password =
-      document
-      .getElementById("loginPassword")
-      .value;
-
-    const message =
-      document
-      .getElementById("loginMessage");
-
-
-    message.className =
-      "message";
-
-    message.innerText =
-      "Logging in...";
+      document.getElementById("loginPassword").value;
 
 
     if (!email || !password) {
 
-      message.className =
-        "message error";
-
-      message.innerText =
-        "Email and password required.";
+      showMessage(
+        "loginMessage",
+        "Enter email and password.",
+        "error"
+      );
 
       return;
     }
 
 
+    showMessage(
+      "loginMessage",
+      "Connecting to Supabase..."
+    );
+
+
     try {
 
       const { data, error } =
-        await supabaseClient
-        .auth
-        .signInWithPassword({
+        await db.auth.signInWithPassword({
 
           email: email,
 
@@ -654,215 +701,212 @@
         });
 
 
-      console.log(
-        "LOGIN DATA:",
-        data
-      );
-
-      console.log(
-        "LOGIN ERROR:",
-        error
-      );
-
-
       if (error) {
 
-        message.className =
-          "message error";
-
-        message.innerText =
-          "Login Error: " +
-          error.message;
+        showMessage(
+          "loginMessage",
+          "Login Error: " + error.message,
+          "error"
+        );
 
         return;
       }
 
 
-      message.className =
-        "message success";
+      showMessage(
+        "loginMessage",
+        "Login successful!",
+        "success"
+      );
 
-      message.innerText =
-        "Login successful!";
+
+      /*
+        Make sure profile exists.
+      */
+
+      await createUserProfile(
+        data.user,
+        data.user.user_metadata?.display_name
+      );
 
 
       await loadDashboard();
 
-    }
-    catch (error) {
 
-      message.className =
-        "message error";
+    } catch (err) {
 
-      message.innerText =
-        "Error: " +
-        error.message;
+      showMessage(
+        "loginMessage",
+        "Error: " + err.message,
+        "error"
+      );
 
     }
 
   }
 
 
-  // =========================================
-  // LOAD DASHBOARD
-  // =========================================
+  /* ==========================================
+     LOAD DASHBOARD
+     ========================================== */
 
   async function loadDashboard() {
 
-    try {
-
-      const {
-        data: {
-          user
-        }
-      } =
-        await supabaseClient
-        .auth
-        .getUser();
-
-
-      if (!user) {
-
-        document
-        .getElementById("authSection")
-        .classList
-        .remove("hidden");
-
-        document
-        .getElementById("dashboard")
-        .classList
-        .add("hidden");
-
-        return;
+    const {
+      data: {
+        session
       }
+    } = await db.auth.getSession();
 
 
-      const { data, error } =
-        await supabaseClient
+    if (!session) {
+
+      document
+        .getElementById("authSection")
+        .classList.remove("hidden");
+
+      document
+        .getElementById("dashboard")
+        .classList.add("hidden");
+
+      return;
+
+    }
+
+
+    const user =
+      session.user;
+
+
+    /*
+      Get profile
+    */
+
+    let { data: profile } =
+      await db
         .from("users")
         .select("*")
-        .eq("id", user.id)
+        .eq("user_id", user.id)
         .maybeSingle();
 
 
-      console.log(
-        "USER PROFILE:",
-        data
-      );
+    /*
+      If profile doesn't exist,
+      create it.
+    */
 
-      console.log(
-        "PROFILE LOAD ERROR:",
-        error
-      );
+    if (!profile) {
+
+      profile =
+        await createUserProfile(
+          user,
+          user.user_metadata?.display_name
+        );
+
+    }
 
 
-      document
+    document
       .getElementById("authSection")
-      .classList
-      .add("hidden");
+      .classList.add("hidden");
 
-
-      document
+    document
       .getElementById("dashboard")
-      .classList
-      .remove("hidden");
+      .classList.remove("hidden");
+
+
+    document
+      .getElementById("headerUser")
+      .textContent =
+      user.email || "";
+
+
+    if (profile) {
+
+      document
+        .getElementById("displayName")
+        .textContent =
+        profile.name || "User";
 
 
       document
-      .getElementById("userName")
-      .innerText =
-        data?.name ||
-        user.user_metadata?.name ||
+        .getElementById("balance")
+        .textContent =
+        Number(profile.balance || 0);
+
+
+      document
+        .getElementById("referralCount")
+        .textContent =
+        Number(profile.referral_count || 0);
+
+
+      document
+        .getElementById("referralCode")
+        .textContent =
+        profile.referral_code || "Not generated";
+
+
+      if (profile.referral_code) {
+
+        const link =
+          window.location.origin +
+          window.location.pathname +
+          "?ref=" +
+          encodeURIComponent(
+            profile.referral_code
+          );
+
+
+        document
+          .getElementById("referralLink")
+          .textContent =
+          link;
+
+      }
+
+    } else {
+
+      document
+        .getElementById("displayName")
+        .textContent =
+        user.user_metadata?.display_name ||
         "User";
 
-
-      document
-      .getElementById("userEmail")
-      .innerText =
-        user.email;
-
-
-      document
-      .getElementById("balance")
-      .innerText =
-        data?.balance || 0;
-
-
-      document
-      .getElementById("referralCount")
-      .innerText =
-        data?.referral_count || 0;
-
-
-      document
-      .getElementById("referralCode")
-      .innerText =
-        data?.referral_code ||
-        "Not generated";
-
-
-      const link =
-        window.location.origin +
-        window.location.pathname +
-        "?ref=" +
-        (data?.referral_code || "");
-
-
-      document
-      .getElementById("referralLink")
-      .innerText =
-        link;
-
-    }
-    catch (error) {
-
-      console.error(
-        "Dashboard error:",
-        error
-      );
-
     }
 
   }
 
 
-  // =========================================
-  // LOGOUT
-  // =========================================
-
-  async function logout() {
-
-    await supabaseClient
-      .auth
-      .signOut();
-
-    location.reload();
-
-  }
-
-
-  // =========================================
-  // COPY REFERRAL
-  // =========================================
+  /* ==========================================
+     COPY REFERRAL
+     ========================================== */
 
   async function copyReferral() {
 
     const link =
       document
-      .getElementById("referralLink")
-      .innerText;
+        .getElementById("referralLink")
+        .textContent;
+
+
+    if (!link ||
+        link === "Generating...") {
+
+      alert("Referral link is not ready yet.");
+
+      return;
+
+    }
 
 
     try {
 
-      await navigator.clipboard
-        .writeText(link);
+      await navigator.clipboard.writeText(link);
 
-      alert(
-        "Referral link copied!"
-      );
+      alert("Referral link copied!");
 
-    }
-    catch (error) {
+    } catch {
 
       alert(
         "Copy failed. Please copy the link manually."
@@ -873,75 +917,147 @@
   }
 
 
-  // =========================================
-  // SHARE
-  // =========================================
+  /* ==========================================
+     SHARE
+     ========================================== */
 
   async function shareReferral() {
 
     const link =
       document
-      .getElementById("referralLink")
-      .innerText;
+        .getElementById("referralLink")
+        .textContent;
 
 
-    if (navigator.share) {
+    if (
+      navigator.share &&
+      link &&
+      link !== "Generating..."
+    ) {
 
-      await navigator.share({
+      try {
 
-        title:
-          "Join EARN10",
+        await navigator.share({
 
-        text:
-          "Join EARN10 and earn rewards!",
+          title: "Join EARN10",
 
-        url:
-          link
+          text:
+            "Join EARN10 and earn rewards!",
 
-      });
+          url: link
 
-    }
-    else {
+        });
 
-      await navigator.clipboard
-        .writeText(link);
+      } catch {
 
-      alert(
-        "Referral link copied!"
-      );
+        // User cancelled share.
+
+      }
+
+    } else {
+
+      await copyReferral();
 
     }
 
   }
 
 
-  // =========================================
-  // PAGE LOAD
-  // =========================================
+  /* ==========================================
+     LOGOUT
+     ========================================== */
 
-  loadDashboard();
+  async function logout() {
+
+    await db.auth.signOut();
+
+    location.reload();
+
+  }
 
 
-  // =========================================
-  // AUTH STATE
-  // =========================================
+  /* ==========================================
+     GAMES
+     ========================================== */
 
-  supabaseClient
-    .auth
-    .onAuthStateChange(
-      async (
-        event,
-        session
-      ) => {
+  function tapGame() {
 
-        if (session) {
+    showMessage(
+      "gameMessage",
+      "🎮 Tap Challenge opened! Game system will be connected later.",
+      "success"
+    );
 
-          await loadDashboard();
+  }
 
-        }
+
+  function dailyBonus() {
+
+    showMessage(
+      "gameMessage",
+      "🎁 Daily Bonus feature will be connected to the wallet later.",
+      "success"
+    );
+
+  }
+
+
+  function quizGame() {
+
+    showMessage(
+      "gameMessage",
+      "🧠 Quiz opened! Quiz reward system will be connected later.",
+      "success"
+    );
+
+  }
+
+
+  /* ==========================================
+     WITHDRAW
+     ========================================== */
+
+  function withdrawInfo() {
+
+    showMessage(
+      "withdrawMessage",
+      "Withdrawal system is not connected yet.",
+      ""
+    );
+
+  }
+
+
+  /* ==========================================
+     AUTH STATE
+     ========================================== */
+
+  db.auth.onAuthStateChange(
+    async (event, session) => {
+
+      if (session) {
+
+        /*
+          Delay avoids Supabase auth
+          event timing issues.
+        */
+
+        setTimeout(
+          () => loadDashboard(),
+          100
+        );
 
       }
-    );
+
+    }
+  );
+
+
+  /* ==========================================
+     START
+     ========================================== */
+
+  loadDashboard();
 
 </script>
 
