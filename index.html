@@ -175,969 +175,1186 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="logo">EARN10</div>
-    <div class="tagline">Refer • Play • Earn</div>
+  <div class="logo">EARN10</div>
+  <div class="tagline">Refer • Play • Earn</div>
 
-    <!-- LOGIN -->
-    <div id="loginBox" class="card">
-      <h2>Login</h2>
 
-      <input
-        type="email"
-        id="loginEmail"
-        placeholder="Enter your email"
-      >
+  <!-- LOGIN -->
 
-      <input
-        type="password"
-        id="loginPassword"
-        placeholder="Enter your password"
-      >
+  <div id="loginBox" class="card">
 
-      <button onclick="login()">Login</button>
+    <h2>Login</h2>
 
-      <button
-        class="link-btn"
-        onclick="showForgotPassword()"
-      >
-        Forgot Password?
-      </button>
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Enter your email"
+    >
 
-      <button
-        class="secondary"
-        onclick="showSignup()"
-      >
-        Create New Account
-      </button>
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Enter your password"
+    >
 
-      <div id="loginMessage" class="message"></div>
+    <button onclick="login()">
+      Login
+    </button>
+
+    <button
+      class="link-btn"
+      onclick="showForgotPassword()"
+    >
+      Forgot Password?
+    </button>
+
+    <button
+      class="secondary"
+      onclick="showSignup()"
+    >
+      Create New Account
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- SIGNUP -->
+
+  <div id="signupBox" class="card hidden">
+
+    <h2>Create Account</h2>
+
+    <input
+      type="text"
+      id="signupName"
+      placeholder="Enter your name"
+    >
+
+    <input
+      type="email"
+      id="signupEmail"
+      placeholder="Enter your email"
+    >
+
+    <input
+      type="password"
+      id="signupPassword"
+      placeholder="Create password"
+    >
+
+    <button onclick="signup()">
+      Create Account
+    </button>
+
+    <button
+      class="link-btn"
+      onclick="showLogin()"
+    >
+      Already have an account? Login
+    </button>
+
+    <div id="signupMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- FORGOT PASSWORD -->
+
+  <div id="forgotBox" class="card hidden">
+
+    <h2>Forgot Password?</h2>
+
+    <p class="small">
+      Enter your registered email.
+      We will send you a password reset link.
+    </p>
+
+    <br>
+
+    <input
+      type="email"
+      id="forgotEmail"
+      placeholder="Enter your registered email"
+    >
+
+    <button onclick="forgotPassword()">
+      Send Reset Link
+    </button>
+
+    <button
+      class="link-btn"
+      onclick="showLogin()"
+    >
+      Back to Login
+    </button>
+
+    <div id="forgotMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- RESET PASSWORD -->
+
+  <div id="resetBox" class="card hidden">
+
+    <h2>Set New Password</h2>
+
+    <p class="small">
+      Enter your new password below.
+    </p>
+
+    <br>
+
+    <input
+      type="password"
+      id="newPassword"
+      placeholder="New password"
+    >
+
+    <input
+      type="password"
+      id="confirmPassword"
+      placeholder="Confirm new password"
+    >
+
+    <button
+      class="success"
+      onclick="updatePassword()"
+    >
+      Update Password
+    </button>
+
+    <div id="resetMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- DASHBOARD -->
+
+  <div id="dashboard" class="hidden">
+
+    <div class="card">
+
+      <div class="welcome">
+        Welcome, <span id="userName">User</span> 👋
+      </div>
+
+      <div class="small">
+        Your EARN10 Dashboard
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong>
+            ₹<span id="balance">0</span>
+          </strong>
+          Balance
+        </div>
+
+        <div class="stat">
+          <strong id="referralCount">0</strong>
+          Referrals
+        </div>
+
+        <div class="stat">
+          <strong>₹10</strong>
+          Per Referral
+        </div>
+
+      </div>
+
     </div>
 
 
-    <!-- SIGNUP -->
-    <div id="signupBox" class="card hidden">
-      <h2>Create Account</h2>
+    <!-- REFERRAL -->
 
-      <input
-        type="text"
-        id="signupName"
-        placeholder="Enter your name"
-      >
+    <div class="card">
 
-      <input
-        type="email"
-        id="signupEmail"
-        placeholder="Enter your email"
-      >
+      <h2>Your Referral</h2>
 
-      <input
-        type="password"
-        id="signupPassword"
-        placeholder="Create password"
-      >
+      <div class="small">
+        Share your referral link and earn ₹10
+        for a valid referral.
+      </div>
 
-      <button onclick="signup()">Create Account</button>
+      <div class="ref-box">
 
-      <button
-        class="link-btn"
-        onclick="showLogin()"
-      >
-        Already have an account? Login
+        <div class="small">
+          Your Referral Code
+        </div>
+
+        <div
+          class="ref-code"
+          id="referralCode"
+        >
+          Loading...
+        </div>
+
+        <div
+          class="small"
+          id="referralLink"
+        >
+          Loading...
+        </div>
+
+      </div>
+
+      <button onclick="copyReferral()">
+        Copy Referral Link
       </button>
-
-      <div id="signupMessage" class="message"></div>
-    </div>
-
-
-    <!-- FORGOT PASSWORD -->
-    <div id="forgotBox" class="card hidden">
-      <h2>Forgot Password?</h2>
-
-      <p class="small">
-        Enter your registered email. We will send you a password reset link.
-      </p>
-
-      <br>
-
-      <input
-        type="email"
-        id="forgotEmail"
-        placeholder="Enter your registered email"
-      >
-
-      <button onclick="forgotPassword()">
-        Send Reset Link
-      </button>
-
-      <button
-        class="link-btn"
-        onclick="showLogin()"
-      >
-        Back to Login
-      </button>
-
-      <div id="forgotMessage" class="message"></div>
-    </div>
-
-
-    <!-- RESET PASSWORD -->
-    <div id="resetBox" class="card hidden">
-      <h2>Set New Password</h2>
-
-      <p class="small">
-        Enter your new password below.
-      </p>
-
-      <br>
-
-      <input
-        type="password"
-        id="newPassword"
-        placeholder="New password"
-      >
-
-      <input
-        type="password"
-        id="confirmPassword"
-        placeholder="Confirm new password"
-      >
 
       <button
         class="success"
-        onclick="updatePassword()"
+        onclick="shareReferral()"
       >
-        Update Password
+        Share Referral Link
       </button>
 
-      <div id="resetMessage" class="message"></div>
     </div>
 
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="hidden">
+    <!-- GAMES -->
 
-      <div class="card">
+    <div class="card">
 
-        <div class="welcome">
-          Welcome, <span id="userName">User</span> 👋
-        </div>
+      <h2>🎮 Games</h2>
 
-        <div class="small">
-          Your EARN10 Dashboard
-        </div>
+      <div class="game">
 
-        <div class="stats">
+        <strong>Tap Challenge</strong>
 
-          <div class="stat">
-            <strong>₹<span id="balance">0</span></strong>
-            Balance
-          </div>
-
-          <div class="stat">
-            <strong id="referralCount">0</strong>
-            Referrals
-          </div>
-
-          <div class="stat">
-            <strong>₹10</strong>
-            Per Referral
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- REFERRAL -->
-      <div class="card">
-
-        <h2>Your Referral</h2>
-
-        <div class="small">
-          Share your referral link and earn ₹10 for a valid referral.
-        </div>
-
-        <div class="ref-box">
-
-          <div class="small">
-            Your Referral Code
-          </div>
-
-          <div
-            class="ref-code"
-            id="referralCode"
-          >
-            Loading...
-          </div>
-
-          <div
-            class="small"
-            id="referralLink"
-          >
-            Loading...
-          </div>
-
-        </div>
-
-        <button onclick="copyReferral()">
-          Copy Referral Link
-        </button>
-
-        <button
-          class="success"
-          onclick="shareReferral()"
-        >
-          Share Referral Link
-        </button>
-
-      </div>
-
-
-      <!-- GAMES -->
-      <div class="card">
-
-        <h2>🎮 Games</h2>
-
-        <div class="game">
-          <strong>Tap Challenge</strong>
-          <p class="small top-space">
-            Game feature coming soon.
-          </p>
-          <button onclick="alert('Game coming soon!')">
-            Play
-          </button>
-        </div>
-
-        <div class="game">
-          <strong>Quiz</strong>
-          <p class="small top-space">
-            Quiz feature coming soon.
-          </p>
-          <button onclick="alert('Quiz coming soon!')">
-            Play
-          </button>
-        </div>
-
-        <div class="game">
-          <strong>Daily Bonus</strong>
-          <p class="small top-space">
-            Daily bonus feature coming soon.
-          </p>
-          <button onclick="alert('Daily bonus coming soon!')">
-            Claim
-          </button>
-        </div>
-
-      </div>
-
-
-      <!-- WITHDRAW -->
-      <div class="card">
-
-        <h2>💰 Withdraw</h2>
-
-        <p class="small">
-          Withdrawal system will be available after the required balance
-          and verification system is completed.
+        <p class="small top-space">
+          Game feature coming soon.
         </p>
 
-        <button
-          class="secondary"
-          onclick="alert('Withdrawal feature coming soon!')"
-        >
-          Withdraw
+        <button onclick="alert('Game coming soon!')">
+          Play
         </button>
 
       </div>
 
 
-      <!-- LOGOUT -->
-      <div class="card">
+      <div class="game">
 
-        <button
-          class="danger"
-          onclick="logout()"
-        >
-          Logout
+        <strong>Quiz</strong>
+
+        <p class="small top-space">
+          Quiz feature coming soon.
+        </p>
+
+        <button onclick="alert('Quiz coming soon!')">
+          Play
         </button>
 
       </div>
+
+
+      <div class="game">
+
+        <strong>Daily Bonus</strong>
+
+        <p class="small top-space">
+          Daily bonus feature coming soon.
+        </p>
+
+        <button onclick="alert('Daily bonus coming soon!')">
+          Claim
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- WITHDRAW -->
+
+    <div class="card">
+
+      <h2>💰 Withdraw</h2>
+
+      <p class="small">
+        Withdrawal system will be available after
+        the required balance and verification system
+        is completed.
+      </p>
+
+      <button
+        class="secondary"
+        onclick="alert('Withdrawal feature coming soon!')"
+      >
+        Withdraw
+      </button>
+
+    </div>
+
+
+    <!-- LOGOUT -->
+
+    <div class="card">
+
+      <button
+        class="danger"
+        onclick="logout()"
+      >
+        Logout
+      </button>
 
     </div>
 
   </div>
 
+</div>
+
 
 <script>
 
-  // ==============================
-  // SUPABASE CONFIG
-  // ==============================
 
-  const SUPABASE_URL =
-    "https://rwwihwmlsdqafehtywdl.supabase.co";
+/* =========================================
+   SUPABASE CONFIG
+========================================= */
 
-  const SUPABASE_KEY =
-    "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
+const SUPABASE_URL =
+  "https://rwwihwmlsdqafehtywdl.supabase.co";
 
-  const db = window.supabase.createClient(
+const SUPABASE_KEY =
+  "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
+
+const db =
+  window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
 
-  // ==============================
-  // PAGE ELEMENTS
-  // ==============================
+/* =========================================
+   ELEMENTS
+========================================= */
 
-  const loginBox =
-    document.getElementById("loginBox");
+const loginBox =
+  document.getElementById("loginBox");
 
-  const signupBox =
-    document.getElementById("signupBox");
+const signupBox =
+  document.getElementById("signupBox");
 
-  const forgotBox =
-    document.getElementById("forgotBox");
+const forgotBox =
+  document.getElementById("forgotBox");
 
-  const resetBox =
-    document.getElementById("resetBox");
+const resetBox =
+  document.getElementById("resetBox");
 
-  const dashboard =
-    document.getElementById("dashboard");
+const dashboard =
+  document.getElementById("dashboard");
 
 
-  // ==============================
-  // SHOW LOGIN
-  // ==============================
+/* =========================================
+   SHOW LOGIN
+========================================= */
 
-  function showLogin() {
+function showLogin() {
 
-    loginBox.classList.remove("hidden");
-    signupBox.classList.add("hidden");
-    forgotBox.classList.add("hidden");
-    resetBox.classList.add("hidden");
-    dashboard.classList.add("hidden");
+  loginBox.classList.remove("hidden");
+
+  signupBox.classList.add("hidden");
+
+  forgotBox.classList.add("hidden");
+
+  resetBox.classList.add("hidden");
+
+  dashboard.classList.add("hidden");
+
+}
+
+
+/* =========================================
+   SHOW SIGNUP
+========================================= */
+
+function showSignup() {
+
+  loginBox.classList.add("hidden");
+
+  signupBox.classList.remove("hidden");
+
+  forgotBox.classList.add("hidden");
+
+  resetBox.classList.add("hidden");
+
+  dashboard.classList.add("hidden");
+
+}
+
+
+/* =========================================
+   SHOW FORGOT PASSWORD
+========================================= */
+
+function showForgotPassword() {
+
+  loginBox.classList.add("hidden");
+
+  signupBox.classList.add("hidden");
+
+  forgotBox.classList.remove("hidden");
+
+  resetBox.classList.add("hidden");
+
+  dashboard.classList.add("hidden");
+
+}
+
+
+/* =========================================
+   SHOW RESET PASSWORD
+========================================= */
+
+function showResetPassword() {
+
+  loginBox.classList.add("hidden");
+
+  signupBox.classList.add("hidden");
+
+  forgotBox.classList.add("hidden");
+
+  resetBox.classList.remove("hidden");
+
+  dashboard.classList.add("hidden");
+
+}
+
+
+/* =========================================
+   GET REFERRAL CODE
+========================================= */
+
+function getReferralCodeFromURL() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return params.get("ref");
+
+}
+
+
+/* =========================================
+   FIND REFERRER
+========================================= */
+
+async function findReferrerByCode(code) {
+
+  if (!code) {
+    return null;
+  }
+
+  const {
+    data,
+    error
+  } = await db
+    .from("users")
+    .select(
+      "user_id, referral_code"
+    )
+    .eq(
+      "referral_code",
+      code
+    )
+    .maybeSingle();
+
+  if (error) {
+
+    console.log(error);
+
+    return null;
 
   }
 
+  return data;
 
-  // ==============================
-  // SHOW SIGNUP
-  // ==============================
-
-  function showSignup() {
-
-    loginBox.classList.add("hidden");
-    signupBox.classList.remove("hidden");
-    forgotBox.classList.add("hidden");
-    resetBox.classList.add("hidden");
-    dashboard.classList.add("hidden");
-
-  }
+}
 
 
-  // ==============================
-  // SHOW FORGOT PASSWORD
-  // ==============================
+/* =========================================
+   SIGNUP
+========================================= */
 
-  function showForgotPassword() {
+async function signup() {
 
-    loginBox.classList.add("hidden");
-    signupBox.classList.add("hidden");
-    forgotBox.classList.remove("hidden");
-    resetBox.classList.add("hidden");
-    dashboard.classList.add("hidden");
+  const name =
+    document
+      .getElementById("signupName")
+      .value
+      .trim();
 
-  }
+  const email =
+    document
+      .getElementById("signupEmail")
+      .value
+      .trim();
 
+  const password =
+    document
+      .getElementById("signupPassword")
+      .value;
 
-  // ==============================
-  // SHOW RESET PASSWORD
-  // ==============================
-
-  function showResetPassword() {
-
-    loginBox.classList.add("hidden");
-    signupBox.classList.add("hidden");
-    forgotBox.classList.add("hidden");
-    resetBox.classList.remove("hidden");
-    dashboard.classList.add("hidden");
-
-  }
-
-
-  // ==============================
-  // GET REFERRAL CODE FROM URL
-  // ==============================
-
-  function getReferralCodeFromURL() {
-
-    const params =
-      new URLSearchParams(window.location.search);
-
-    return params.get("ref");
-
-  }
+  const message =
+    document.getElementById(
+      "signupMessage"
+    );
 
 
-  // ==============================
-  // FIND REFERRER
-  // ==============================
-
-  async function findReferrerByCode(code) {
-
-    if (!code) {
-      return null;
-    }
-
-    const { data, error } =
-      await db
-        .from("users")
-        .select("user_id, referral_code")
-        .eq("referral_code", code)
-        .maybeSingle();
-
-    if (error) {
-      console.log(error);
-      return null;
-    }
-
-    return data;
-
-  }
+  message.textContent =
+    "Creating account...";
 
 
-  // ==============================
-  // SIGNUP
-  // ==============================
-
-  async function signup() {
-
-    const name =
-      document.getElementById("signupName").value.trim();
-
-    const email =
-      document.getElementById("signupEmail").value.trim();
-
-    const password =
-      document.getElementById("signupPassword").value;
-
-    const message =
-      document.getElementById("signupMessage");
+  if (
+    !name ||
+    !email ||
+    !password
+  ) {
 
     message.textContent =
-      "Creating account...";
+      "Please fill all fields.";
 
-    if (!name || !email || !password) {
-
-      message.textContent =
-        "Please fill all fields.";
-
-      return;
-
-    }
-
-    if (password.length < 6) {
-
-      message.textContent =
-        "Password must be at least 6 characters.";
-
-      return;
-
-    }
-
-
-    // Get referral from URL
-
-    const referralCode =
-      getReferralCodeFromURL();
-
-    let referrer = null;
-
-    if (referralCode) {
-
-      referrer =
-        await findReferrerByCode(referralCode);
-
-    }
-
-
-    const { data, error } =
-      await db.auth.signUp({
-
-        email: email,
-
-        password: password,
-
-        options: {
-
-          data: {
-
-            display_name: name,
-
-            referred_by:
-              referrer
-                ? referrer.user_id
-                : null
-
-          }
-
-        }
-
-      });
-
-
-    if (error) {
-
-      message.textContent =
-        "Signup Error: " + error.message;
-
-      return;
-
-    }
-
-
-    message.textContent =
-      "Account created successfully! Check your email for confirmation if required.";
+    return;
 
   }
 
 
-  // ==============================
-  // LOGIN
-  // ==============================
-
-  async function login() {
-
-    const email =
-      document.getElementById("loginEmail").value.trim();
-
-    const password =
-      document.getElementById("loginPassword").value;
-
-    const message =
-      document.getElementById("loginMessage");
+  if (password.length < 6) {
 
     message.textContent =
-      "Logging in...";
+      "Password must be at least 6 characters.";
+
+    return;
+
+  }
 
 
-    if (!email || !password) {
+  const referralCode =
+    getReferralCodeFromURL();
 
-      message.textContent =
-        "Please enter email and password.";
+  let referrer = null;
+
+
+  if (referralCode) {
+
+    referrer =
+      await findReferrerByCode(
+        referralCode
+      );
+
+  }
+
+
+  const {
+    data,
+    error
+  } = await db.auth.signUp({
+
+    email: email,
+
+    password: password,
+
+    options: {
+
+      data: {
+
+        display_name: name,
+
+        referred_by:
+          referrer
+            ? referrer.user_id
+            : null
+
+      }
+
+    }
+
+  });
+
+
+  if (error) {
+
+    message.textContent =
+      "Signup Error: " +
+      error.message;
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Account created successfully! Check your email for confirmation if required.";
+
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+async function login() {
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+  const message =
+    document.getElementById(
+      "loginMessage"
+    );
+
+
+  message.textContent =
+    "Logging in...";
+
+
+  if (!email || !password) {
+
+    message.textContent =
+      "Please enter email and password.";
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } = await db.auth.signInWithPassword({
+
+    email: email,
+
+    password: password
+
+  });
+
+
+  if (error) {
+
+    message.textContent =
+      "Login Error: " +
+      error.message;
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Login successful!";
+
+
+  await loadDashboard();
+
+}
+
+
+/* =========================================
+   FORGOT PASSWORD
+========================================= */
+
+async function forgotPassword() {
+
+  const email =
+    document
+      .getElementById("forgotEmail")
+      .value
+      .trim();
+
+  const message =
+    document.getElementById(
+      "forgotMessage"
+    );
+
+
+  if (!email) {
+
+    message.textContent =
+      "Please enter your email.";
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Sending reset link...";
+
+
+  const {
+    error
+  } =
+    await db.auth.resetPasswordForEmail(
+
+      email,
+
+      {
+
+        redirectTo:
+          window.location.origin +
+          window.location.pathname
+
+      }
+
+    );
+
+
+  if (error) {
+
+    message.textContent =
+      "Error: " +
+      error.message;
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Reset link sent! Check your email.";
+
+}
+
+
+/* =========================================
+   UPDATE PASSWORD
+========================================= */
+
+async function updatePassword() {
+
+  const password =
+    document
+      .getElementById("newPassword")
+      .value;
+
+  const confirmPassword =
+    document
+      .getElementById("confirmPassword")
+      .value;
+
+  const message =
+    document.getElementById(
+      "resetMessage"
+    );
+
+
+  if (
+    !password ||
+    !confirmPassword
+  ) {
+
+    message.textContent =
+      "Please fill both password fields.";
+
+    return;
+
+  }
+
+
+  if (password.length < 6) {
+
+    message.textContent =
+      "Password must be at least 6 characters.";
+
+    return;
+
+  }
+
+
+  if (
+    password !== confirmPassword
+  ) {
+
+    message.textContent =
+      "Passwords do not match.";
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Updating password...";
+
+
+  const {
+    error
+  } =
+    await db.auth.updateUser({
+
+      password: password
+
+    });
+
+
+  if (error) {
+
+    message.textContent =
+      "Password update error: " +
+      error.message;
+
+    return;
+
+  }
+
+
+  message.textContent =
+    "Password updated successfully!";
+
+
+  setTimeout(
+    () => {
+
+      showLogin();
+
+    },
+    1500
+  );
+
+}
+
+
+/* =========================================
+   LOAD DASHBOARD
+========================================= */
+
+async function loadDashboard() {
+
+  const {
+    data: {
+      user
+    }
+  } =
+    await db.auth.getUser();
+
+
+  if (!user) {
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  const {
+    data: profile,
+    error
+  } =
+    await db
+      .from("users")
+      .select(
+        "name, balance, referral_count, referral_code"
+      )
+      .eq(
+        "user_id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.log(error);
+
+  }
+
+
+  if (!profile) {
+
+    console.log(
+      "Profile not found yet."
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "userName"
+  ).textContent =
+    profile.name || "User";
+
+
+  document.getElementById(
+    "balance"
+  ).textContent =
+    profile.balance || 0;
+
+
+  document.getElementById(
+    "referralCount"
+  ).textContent =
+    profile.referral_count || 0;
+
+
+  document.getElementById(
+    "referralCode"
+  ).textContent =
+    profile.referral_code || "N/A";
+
+
+  const referralLink =
+    window.location.origin +
+    window.location.pathname +
+    "?ref=" +
+    profile.referral_code;
+
+
+  document.getElementById(
+    "referralLink"
+  ).textContent =
+    referralLink;
+
+
+  dashboard.classList.remove(
+    "hidden"
+  );
+
+  loginBox.classList.add(
+    "hidden"
+  );
+
+  signupBox.classList.add(
+    "hidden"
+  );
+
+  forgotBox.classList.add(
+    "hidden"
+  );
+
+  resetBox.classList.add(
+    "hidden"
+  );
+
+}
+
+
+/* =========================================
+   COPY REFERRAL
+========================================= */
+
+async function copyReferral() {
+
+  const code =
+    document.getElementById(
+      "referralCode"
+    ).textContent;
+
+
+  const link =
+    window.location.origin +
+    window.location.pathname +
+    "?ref=" +
+    code;
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      link
+    );
+
+    alert(
+      "Referral link copied!"
+    );
+
+  } catch {
+
+    alert(link);
+
+  }
+
+}
+
+
+/* =========================================
+   SHARE REFERRAL
+========================================= */
+
+async function shareReferral() {
+
+  const code =
+    document.getElementById(
+      "referralCode"
+    ).textContent;
+
+
+  const link =
+    window.location.origin +
+    window.location.pathname +
+    "?ref=" +
+    code;
+
+
+  if (navigator.share) {
+
+    await navigator.share({
+
+      title: "EARN10",
+
+      text:
+        "Join EARN10 using my referral link!",
+
+      url: link
+
+    });
+
+  } else {
+
+    await navigator.clipboard.writeText(
+      link
+    );
+
+    alert(
+      "Referral link copied!"
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+async function logout() {
+
+  await db.auth.signOut();
+
+  showLogin();
+
+}
+
+
+/* =========================================
+   AUTH STATE CHANGE
+========================================= */
+
+db.auth.onAuthStateChange(
+
+  async (
+    event,
+    session
+  ) => {
+
+    console.log(
+      "AUTH EVENT:",
+      event
+    );
+
+
+    /*
+      IMPORTANT:
+      Supabase recovery link ke baad
+      PASSWORD_RECOVERY event aata hai.
+    */
+
+    if (
+      event ===
+      "PASSWORD_RECOVERY"
+    ) {
+
+      showResetPassword();
 
       return;
 
     }
 
 
-    const { data, error } =
-      await db.auth.signInWithPassword({
+    if (
+      session &&
+      event !==
+      "SIGNED_OUT"
+    ) {
 
-        email: email,
-
-        password: password
-
-      });
-
-
-    if (error) {
-
-      message.textContent =
-        "Login Error: " + error.message;
-
-      return;
+      await loadDashboard();
 
     }
 
+  }
 
-    message.textContent =
-      "Login successful!";
+);
+
+
+/* =========================================
+   CHECK SESSION
+========================================= */
+
+async function checkSession() {
+
+  /*
+    Recovery link kabhi-kabhi hash ke
+    through token bhejta hai.
+  */
+
+  const hash =
+    window.location.hash;
+
+
+  /*
+    Agar URL me recovery information hai,
+    direct password reset screen dikhao.
+  */
+
+  if (
+    hash.includes(
+      "type=recovery"
+    )
+  ) {
+
+    showResetPassword();
+
+    return;
+
+  }
+
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await db.auth.getSession();
+
+
+  if (session) {
 
     await loadDashboard();
 
-  }
-
-
-  // ==============================
-  // FORGOT PASSWORD
-  // ==============================
-
-  async function forgotPassword() {
-
-    const email =
-      document.getElementById("forgotEmail").value.trim();
-
-    const message =
-      document.getElementById("forgotMessage");
-
-
-    if (!email) {
-
-      message.textContent =
-        "Please enter your email.";
-
-      return;
-
-    }
-
-
-    message.textContent =
-      "Sending reset link...";
-
-
-    const { error } =
-      await db.auth.resetPasswordForEmail(
-
-        email,
-
-        {
-
-          redirectTo:
-            window.location.origin +
-            window.location.pathname
-
-        }
-
-      );
-
-
-    if (error) {
-
-      message.textContent =
-        "Error: " + error.message;
-
-      return;
-
-    }
-
-
-    message.textContent =
-      "Reset link sent! Check your email.";
-
-  }
-
-
-  // ==============================
-  // UPDATE PASSWORD
-  // ==============================
-
-  async function updatePassword() {
-
-    const password =
-      document.getElementById("newPassword").value;
-
-    const confirmPassword =
-      document.getElementById("confirmPassword").value;
-
-    const message =
-      document.getElementById("resetMessage");
-
-
-    if (!password || !confirmPassword) {
-
-      message.textContent =
-        "Please fill both password fields.";
-
-      return;
-
-    }
-
-
-    if (password.length < 6) {
-
-      message.textContent =
-        "Password must be at least 6 characters.";
-
-      return;
-
-    }
-
-
-    if (password !== confirmPassword) {
-
-      message.textContent =
-        "Passwords do not match.";
-
-      return;
-
-    }
-
-
-    message.textContent =
-      "Updating password...";
-
-
-    const { error } =
-      await db.auth.updateUser({
-
-        password: password
-
-      });
-
-
-    if (error) {
-
-      message.textContent =
-        "Password update error: " +
-        error.message;
-
-      return;
-
-    }
-
-
-    message.textContent =
-      "Password updated successfully!";
-
-
-    setTimeout(() => {
-
-      showLogin();
-
-    }, 1500);
-
-  }
-
-
-  // ==============================
-  // LOAD DASHBOARD
-  // ==============================
-
-  async function loadDashboard() {
-
-    const {
-      data: {
-        user
-      }
-    } = await db.auth.getUser();
-
-
-    if (!user) {
-
-      showLogin();
-
-      return;
-
-    }
-
-
-    const { data: profile, error } =
-      await db
-        .from("users")
-        .select(
-          "name, balance, referral_count, referral_code"
-        )
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-
-    if (error) {
-
-      console.log(error);
-
-    }
-
-
-    if (!profile) {
-
-      console.log(
-        "Profile not found yet."
-      );
-
-      return;
-
-    }
-
-
-    document.getElementById("userName")
-      .textContent =
-      profile.name || "User";
-
-
-    document.getElementById("balance")
-      .textContent =
-      profile.balance || 0;
-
-
-    document.getElementById("referralCount")
-      .textContent =
-      profile.referral_count || 0;
-
-
-    document.getElementById("referralCode")
-      .textContent =
-      profile.referral_code || "N/A";
-
-
-    const referralLink =
-      window.location.origin +
-      window.location.pathname +
-      "?ref=" +
-      profile.referral_code;
-
-
-    document.getElementById("referralLink")
-      .textContent =
-      referralLink;
-
-
-    dashboard.classList.remove("hidden");
-
-    loginBox.classList.add("hidden");
-    signupBox.classList.add("hidden");
-    forgotBox.classList.add("hidden");
-    resetBox.classList.add("hidden");
-
-  }
-
-
-  // ==============================
-  // COPY REFERRAL
-  // ==============================
-
-  async function copyReferral() {
-
-    const code =
-      document.getElementById("referralCode")
-        .textContent;
-
-
-    const link =
-      window.location.origin +
-      window.location.pathname +
-      "?ref=" +
-      code;
-
-
-    try {
-
-      await navigator.clipboard.writeText(link);
-
-      alert("Referral link copied!");
-
-    } catch {
-
-      alert(link);
-
-    }
-
-  }
-
-
-  // ==============================
-  // SHARE REFERRAL
-  // ==============================
-
-  async function shareReferral() {
-
-    const code =
-      document.getElementById("referralCode")
-        .textContent;
-
-
-    const link =
-      window.location.origin +
-      window.location.pathname +
-      "?ref=" +
-      code;
-
-
-    if (navigator.share) {
-
-      await navigator.share({
-
-        title: "EARN10",
-
-        text:
-          "Join EARN10 using my referral link!",
-
-        url: link
-
-      });
-
-    } else {
-
-      await navigator.clipboard.writeText(link);
-
-      alert("Referral link copied!");
-
-    }
-
-  }
-
-
-  // ==============================
-  // LOGOUT
-  // ==============================
-
-  async function logout() {
-
-    await db.auth.signOut();
+  } else {
 
     showLogin();
 
   }
 
-
-  // ==============================
-  // AUTH STATE
-  // ==============================
-
-  db.auth.onAuthStateChange(
-
-    async (event, session) => {
-
-      if (event === "PASSWORD_RECOVERY") {
-
-        showResetPassword();
-
-        return;
-
-      }
+}
 
 
-      if (session && event !== "SIGNED_OUT") {
+/* =========================================
+   START APP
+========================================= */
 
-        await loadDashboard();
-
-      }
-
-    }
-
-  );
-
-
-  // ==============================
-  // CHECK CURRENT SESSION
-  // ==============================
-
-  async function checkSession() {
-
-    const {
-      data: {
-        session
-      }
-    } = await db.auth.getSession();
-
-
-    if (session) {
-
-      await loadDashboard();
-
-    } else {
-
-      showLogin();
-
-    }
-
-  }
-
-
-  checkSession();
+checkSession();
 
 </script>
 
