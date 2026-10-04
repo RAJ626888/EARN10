@@ -180,40 +180,22 @@
   <div class="logo">EARN10</div>
   <div class="tagline">Refer • Play • Earn</div>
 
-
   <!-- LOGIN -->
-
   <div id="loginBox" class="card">
 
     <h2>Login</h2>
 
-    <input
-      type="email"
-      id="loginEmail"
-      placeholder="Enter your email"
-    >
+    <input type="email" id="loginEmail" placeholder="Enter your email">
 
-    <input
-      type="password"
-      id="loginPassword"
-      placeholder="Enter your password"
-    >
+    <input type="password" id="loginPassword" placeholder="Enter your password">
 
-    <button onclick="login()">
-      Login
-    </button>
+    <button onclick="login()">Login</button>
 
-    <button
-      class="link-btn"
-      onclick="showForgotPassword()"
-    >
+    <button class="link-btn" onclick="showForgotPassword()">
       Forgot Password?
     </button>
 
-    <button
-      class="secondary"
-      onclick="showSignup()"
-    >
+    <button class="secondary" onclick="showSignup()">
       Create New Account
     </button>
 
@@ -221,39 +203,20 @@
 
   </div>
 
-
   <!-- SIGNUP -->
-
   <div id="signupBox" class="card hidden">
 
     <h2>Create Account</h2>
 
-    <input
-      type="text"
-      id="signupName"
-      placeholder="Enter your name"
-    >
+    <input type="text" id="signupName" placeholder="Enter your name">
 
-    <input
-      type="email"
-      id="signupEmail"
-      placeholder="Enter your email"
-    >
+    <input type="email" id="signupEmail" placeholder="Enter your email">
 
-    <input
-      type="password"
-      id="signupPassword"
-      placeholder="Create password"
-    >
+    <input type="password" id="signupPassword" placeholder="Create password">
 
-    <button onclick="signup()">
-      Create Account
-    </button>
+    <button onclick="signup()">Create Account</button>
 
-    <button
-      class="link-btn"
-      onclick="showLogin()"
-    >
+    <button class="link-btn" onclick="showLogin()">
       Already have an account? Login
     </button>
 
@@ -261,9 +224,7 @@
 
   </div>
 
-
   <!-- FORGOT PASSWORD -->
-
   <div id="forgotBox" class="card hidden">
 
     <h2>Forgot Password?</h2>
@@ -285,10 +246,7 @@
       Send Reset Link
     </button>
 
-    <button
-      class="link-btn"
-      onclick="showLogin()"
-    >
+    <button class="link-btn" onclick="showLogin()">
       Back to Login
     </button>
 
@@ -296,9 +254,7 @@
 
   </div>
 
-
   <!-- RESET PASSWORD -->
-
   <div id="resetBox" class="card hidden">
 
     <h2>Set New Password</h2>
@@ -321,10 +277,7 @@
       placeholder="Confirm new password"
     >
 
-    <button
-      class="success"
-      onclick="updatePassword()"
-    >
+    <button class="success" onclick="updatePassword()">
       Update Password
     </button>
 
@@ -332,9 +285,7 @@
 
   </div>
 
-
   <!-- DASHBOARD -->
-
   <div id="dashboard" class="hidden">
 
     <div class="card">
@@ -350,9 +301,7 @@
       <div class="stats">
 
         <div class="stat">
-          <strong>
-            ₹<span id="balance">0</span>
-          </strong>
+          <strong>₹<span id="balance">0</span></strong>
           Balance
         </div>
 
@@ -370,9 +319,7 @@
 
     </div>
 
-
     <!-- REFERRAL -->
-
     <div class="card">
 
       <h2>Your Referral</h2>
@@ -388,17 +335,11 @@
           Your Referral Code
         </div>
 
-        <div
-          class="ref-code"
-          id="referralCode"
-        >
+        <div class="ref-code" id="referralCode">
           Loading...
         </div>
 
-        <div
-          class="small"
-          id="referralLink"
-        >
+        <div class="small" id="referralLink">
           Loading...
         </div>
 
@@ -408,18 +349,13 @@
         Copy Referral Link
       </button>
 
-      <button
-        class="success"
-        onclick="shareReferral()"
-      >
+      <button class="success" onclick="shareReferral()">
         Share Referral Link
       </button>
 
     </div>
 
-
     <!-- GAMES -->
-
     <div class="card">
 
       <h2>🎮 Games</h2>
@@ -438,7 +374,6 @@
 
       </div>
 
-
       <div class="game">
 
         <strong>Quiz</strong>
@@ -452,7 +387,6 @@
         </button>
 
       </div>
-
 
       <div class="game">
 
@@ -470,9 +404,7 @@
 
     </div>
 
-
     <!-- WITHDRAW -->
-
     <div class="card">
 
       <h2>💰 Withdraw</h2>
@@ -492,15 +424,10 @@
 
     </div>
 
-
     <!-- LOGOUT -->
-
     <div class="card">
 
-      <button
-        class="danger"
-        onclick="logout()"
-      >
+      <button class="danger" onclick="logout()">
         Logout
       </button>
 
@@ -510,9 +437,7 @@
 
 </div>
 
-
 <script>
-
 
 /* =========================================
    SUPABASE CONFIG
@@ -522,13 +447,22 @@ const SUPABASE_URL =
   "https://rwwihwmlsdqafehtywdl.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
+  "YOUR_PUBLISHABLE_KEY";
 
 const db =
   window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
+
+/* =========================================
+   RECOVERY MODE
+   IMPORTANT FIX
+========================================= */
+
+let recoveryMode =
+  window.location.hash.includes("type=recovery");
 
 
 /* =========================================
@@ -558,13 +492,9 @@ const dashboard =
 function showLogin() {
 
   loginBox.classList.remove("hidden");
-
   signupBox.classList.add("hidden");
-
   forgotBox.classList.add("hidden");
-
   resetBox.classList.add("hidden");
-
   dashboard.classList.add("hidden");
 
 }
@@ -577,13 +507,9 @@ function showLogin() {
 function showSignup() {
 
   loginBox.classList.add("hidden");
-
   signupBox.classList.remove("hidden");
-
   forgotBox.classList.add("hidden");
-
   resetBox.classList.add("hidden");
-
   dashboard.classList.add("hidden");
 
 }
@@ -596,13 +522,9 @@ function showSignup() {
 function showForgotPassword() {
 
   loginBox.classList.add("hidden");
-
   signupBox.classList.add("hidden");
-
   forgotBox.classList.remove("hidden");
-
   resetBox.classList.add("hidden");
-
   dashboard.classList.add("hidden");
 
 }
@@ -615,13 +537,9 @@ function showForgotPassword() {
 function showResetPassword() {
 
   loginBox.classList.add("hidden");
-
   signupBox.classList.add("hidden");
-
   forgotBox.classList.add("hidden");
-
   resetBox.classList.remove("hidden");
-
   dashboard.classList.add("hidden");
 
 }
@@ -658,13 +576,8 @@ async function findReferrerByCode(code) {
     error
   } = await db
     .from("users")
-    .select(
-      "user_id, referral_code"
-    )
-    .eq(
-      "referral_code",
-      code
-    )
+    .select("user_id, referral_code")
+    .eq("referral_code", code)
     .maybeSingle();
 
   if (error) {
@@ -704,20 +617,12 @@ async function signup() {
       .value;
 
   const message =
-    document.getElementById(
-      "signupMessage"
-    );
-
+    document.getElementById("signupMessage");
 
   message.textContent =
     "Creating account...";
 
-
-  if (
-    !name ||
-    !email ||
-    !password
-  ) {
+  if (!name || !email || !password) {
 
     message.textContent =
       "Please fill all fields.";
@@ -725,7 +630,6 @@ async function signup() {
     return;
 
   }
-
 
   if (password.length < 6) {
 
@@ -736,12 +640,10 @@ async function signup() {
 
   }
 
-
   const referralCode =
     getReferralCodeFromURL();
 
   let referrer = null;
-
 
   if (referralCode) {
 
@@ -752,33 +654,31 @@ async function signup() {
 
   }
 
-
   const {
-    data,
     error
-  } = await db.auth.signUp({
+  } =
+    await db.auth.signUp({
 
-    email: email,
+      email: email,
 
-    password: password,
+      password: password,
 
-    options: {
+      options: {
 
-      data: {
+        data: {
 
-        display_name: name,
+          display_name: name,
 
-        referred_by:
-          referrer
-            ? referrer.user_id
-            : null
+          referred_by:
+            referrer
+              ? referrer.user_id
+              : null
+
+        }
 
       }
 
-    }
-
-  });
-
+    });
 
   if (error) {
 
@@ -789,7 +689,6 @@ async function signup() {
     return;
 
   }
-
 
   message.textContent =
     "Account created successfully! Check your email for confirmation if required.";
@@ -815,14 +714,10 @@ async function login() {
       .value;
 
   const message =
-    document.getElementById(
-      "loginMessage"
-    );
-
+    document.getElementById("loginMessage");
 
   message.textContent =
     "Logging in...";
-
 
   if (!email || !password) {
 
@@ -833,18 +728,16 @@ async function login() {
 
   }
 
-
   const {
-    data,
     error
-  } = await db.auth.signInWithPassword({
+  } =
+    await db.auth.signInWithPassword({
 
-    email: email,
+      email: email,
 
-    password: password
+      password: password
 
-  });
-
+    });
 
   if (error) {
 
@@ -856,10 +749,8 @@ async function login() {
 
   }
 
-
   message.textContent =
     "Login successful!";
-
 
   await loadDashboard();
 
@@ -879,10 +770,7 @@ async function forgotPassword() {
       .trim();
 
   const message =
-    document.getElementById(
-      "forgotMessage"
-    );
-
+    document.getElementById("forgotMessage");
 
   if (!email) {
 
@@ -893,10 +781,8 @@ async function forgotPassword() {
 
   }
 
-
   message.textContent =
     "Sending reset link...";
-
 
   const {
     error
@@ -906,15 +792,12 @@ async function forgotPassword() {
       email,
 
       {
-
         redirectTo:
           window.location.origin +
           window.location.pathname
-
       }
 
     );
-
 
   if (error) {
 
@@ -925,7 +808,6 @@ async function forgotPassword() {
     return;
 
   }
-
 
   message.textContent =
     "Reset link sent! Check your email.";
@@ -950,15 +832,9 @@ async function updatePassword() {
       .value;
 
   const message =
-    document.getElementById(
-      "resetMessage"
-    );
+    document.getElementById("resetMessage");
 
-
-  if (
-    !password ||
-    !confirmPassword
-  ) {
+  if (!password || !confirmPassword) {
 
     message.textContent =
       "Please fill both password fields.";
@@ -966,7 +842,6 @@ async function updatePassword() {
     return;
 
   }
-
 
   if (password.length < 6) {
 
@@ -977,10 +852,7 @@ async function updatePassword() {
 
   }
 
-
-  if (
-    password !== confirmPassword
-  ) {
+  if (password !== confirmPassword) {
 
     message.textContent =
       "Passwords do not match.";
@@ -989,10 +861,8 @@ async function updatePassword() {
 
   }
 
-
   message.textContent =
     "Updating password...";
-
 
   const {
     error
@@ -1002,7 +872,6 @@ async function updatePassword() {
       password: password
 
     });
-
 
   if (error) {
 
@@ -1014,18 +883,23 @@ async function updatePassword() {
 
   }
 
-
   message.textContent =
     "Password updated successfully!";
 
+  /*
+    Password successfully changed.
+    Recovery session ko close kar dete hain.
+  */
+
+  await db.auth.signOut();
+
+  recoveryMode = false;
 
   setTimeout(
     () => {
-
       showLogin();
-
     },
-    1500
+    1200
   );
 
 }
@@ -1037,13 +911,26 @@ async function updatePassword() {
 
 async function loadDashboard() {
 
+  /*
+    IMPORTANT:
+    Recovery mode me dashboard kabhi
+    load nahi hoga.
+  */
+
+  if (recoveryMode) {
+
+    showResetPassword();
+
+    return;
+
+  }
+
   const {
     data: {
       user
     }
   } =
     await db.auth.getUser();
-
 
   if (!user) {
 
@@ -1052,7 +939,6 @@ async function loadDashboard() {
     return;
 
   }
-
 
   const {
     data: profile,
@@ -1063,19 +949,14 @@ async function loadDashboard() {
       .select(
         "name, balance, referral_count, referral_code"
       )
-      .eq(
-        "user_id",
-        user.id
-      )
+      .eq("user_id", user.id)
       .maybeSingle();
-
 
   if (error) {
 
     console.log(error);
 
   }
-
 
   if (!profile) {
 
@@ -1087,30 +968,25 @@ async function loadDashboard() {
 
   }
 
-
   document.getElementById(
     "userName"
   ).textContent =
     profile.name || "User";
-
 
   document.getElementById(
     "balance"
   ).textContent =
     profile.balance || 0;
 
-
   document.getElementById(
     "referralCount"
   ).textContent =
     profile.referral_count || 0;
 
-
   document.getElementById(
     "referralCode"
   ).textContent =
     profile.referral_code || "N/A";
-
 
   const referralLink =
     window.location.origin +
@@ -1118,32 +994,17 @@ async function loadDashboard() {
     "?ref=" +
     profile.referral_code;
 
-
   document.getElementById(
     "referralLink"
   ).textContent =
     referralLink;
 
+  dashboard.classList.remove("hidden");
 
-  dashboard.classList.remove(
-    "hidden"
-  );
-
-  loginBox.classList.add(
-    "hidden"
-  );
-
-  signupBox.classList.add(
-    "hidden"
-  );
-
-  forgotBox.classList.add(
-    "hidden"
-  );
-
-  resetBox.classList.add(
-    "hidden"
-  );
+  loginBox.classList.add("hidden");
+  signupBox.classList.add("hidden");
+  forgotBox.classList.add("hidden");
+  resetBox.classList.add("hidden");
 
 }
 
@@ -1159,23 +1020,17 @@ async function copyReferral() {
       "referralCode"
     ).textContent;
 
-
   const link =
     window.location.origin +
     window.location.pathname +
     "?ref=" +
     code;
 
-
   try {
 
-    await navigator.clipboard.writeText(
-      link
-    );
+    await navigator.clipboard.writeText(link);
 
-    alert(
-      "Referral link copied!"
-    );
+    alert("Referral link copied!");
 
   } catch {
 
@@ -1197,13 +1052,11 @@ async function shareReferral() {
       "referralCode"
     ).textContent;
 
-
   const link =
     window.location.origin +
     window.location.pathname +
     "?ref=" +
     code;
-
 
   if (navigator.share) {
 
@@ -1220,13 +1073,9 @@ async function shareReferral() {
 
   } else {
 
-    await navigator.clipboard.writeText(
-      link
-    );
+    await navigator.clipboard.writeText(link);
 
-    alert(
-      "Referral link copied!"
-    );
+    alert("Referral link copied!");
 
   }
 
@@ -1241,6 +1090,8 @@ async function logout() {
 
   await db.auth.signOut();
 
+  recoveryMode = false;
+
   showLogin();
 
 }
@@ -1248,31 +1099,26 @@ async function logout() {
 
 /* =========================================
    AUTH STATE CHANGE
+   IMPORTANT FIX
 ========================================= */
 
 db.auth.onAuthStateChange(
 
-  async (
-    event,
-    session
-  ) => {
+  async (event, session) => {
 
     console.log(
       "AUTH EVENT:",
       event
     );
 
-
     /*
-      IMPORTANT:
-      Supabase recovery link ke baad
-      PASSWORD_RECOVERY event aata hai.
+      PASSWORD_RECOVERY event:
+      password screen show karo.
     */
 
-    if (
-      event ===
-      "PASSWORD_RECOVERY"
-    ) {
+    if (event === "PASSWORD_RECOVERY") {
+
+      recoveryMode = true;
 
       showResetPassword();
 
@@ -1280,11 +1126,27 @@ db.auth.onAuthStateChange(
 
     }
 
+    /*
+      Recovery mode ke andar kisi bhi
+      SIGNED_IN event par dashboard
+      load nahi karna.
+    */
+
+    if (recoveryMode) {
+
+      showResetPassword();
+
+      return;
+
+    }
+
+    /*
+      Normal login ke baad dashboard.
+    */
 
     if (
       session &&
-      event !==
-      "SIGNED_OUT"
+      event !== "SIGNED_OUT"
     ) {
 
       await loadDashboard();
@@ -1303,24 +1165,17 @@ db.auth.onAuthStateChange(
 async function checkSession() {
 
   /*
-    Recovery link kabhi-kabhi hash ke
-    through token bhejta hai.
+    Sabse pehle recovery URL check.
   */
 
   const hash =
     window.location.hash;
 
-
-  /*
-    Agar URL me recovery information hai,
-    direct password reset screen dikhao.
-  */
-
   if (
-    hash.includes(
-      "type=recovery"
-    )
+    hash.includes("type=recovery")
   ) {
+
+    recoveryMode = true;
 
     showResetPassword();
 
@@ -1328,6 +1183,9 @@ async function checkSession() {
 
   }
 
+  /*
+    Normal session check.
+  */
 
   const {
     data: {
@@ -1336,8 +1194,12 @@ async function checkSession() {
   } =
     await db.auth.getSession();
 
+  /*
+    Agar normal session hai,
+    dashboard dikhao.
+  */
 
-  if (session) {
+  if (session && !recoveryMode) {
 
     await loadDashboard();
 
