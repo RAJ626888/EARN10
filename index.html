@@ -156,7 +156,7 @@ h2,h3{
 </header>
 
 
-<!-- ================= LOGIN ================= -->
+<!-- LOGIN -->
 
 <section id="loginSection" class="card">
 
@@ -189,7 +189,7 @@ h2,h3{
 </section>
 
 
-<!-- ================= SIGNUP ================= -->
+<!-- SIGNUP -->
 
 <section id="signupSection" class="card hidden">
 
@@ -224,7 +224,7 @@ h2,h3{
 </section>
 
 
-<!-- ================= FORGOT PASSWORD ================= -->
+<!-- FORGOT PASSWORD -->
 
 <section id="forgotSection" class="card hidden">
 
@@ -253,7 +253,7 @@ h2,h3{
 </section>
 
 
-<!-- ================= NEW PASSWORD ================= -->
+<!-- NEW PASSWORD -->
 
 <section id="newPasswordSection" class="card hidden">
 
@@ -280,7 +280,7 @@ h2,h3{
 </section>
 
 
-<!-- ================= DASHBOARD ================= -->
+<!-- DASHBOARD -->
 
 <section id="dashboardSection" class="hidden">
 
@@ -404,7 +404,8 @@ h2,h3{
   Withdrawal feature will be connected to a secure payment system later.
 </p>
 
-<button class="secondary" onclick="alert('Withdrawal system coming soon.')">
+<button class="secondary"
+        onclick="alert('Withdrawal system coming soon.')">
   Withdraw
 </button>
 
@@ -429,7 +430,7 @@ h2,h3{
 <script>
 
 /* =====================================================
-   SUPABASE CONFIG
+   SUPABASE
    ===================================================== */
 
 const SUPABASE_URL =
@@ -513,19 +514,22 @@ function showResetPassword(){
 
 
 /* =====================================================
-   SIGNUP
+   SIGNUP + REFERRAL
    ===================================================== */
 
 async function signup(){
 
   const name =
-    document.getElementById("signupName").value.trim();
+    document.getElementById("signupName")
+      .value.trim();
 
   const email =
-    document.getElementById("signupEmail").value.trim();
+    document.getElementById("signupEmail")
+      .value.trim();
 
   const password =
-    document.getElementById("signupPassword").value;
+    document.getElementById("signupPassword")
+      .value;
 
   const msg =
     document.getElementById("signupMessage");
@@ -555,14 +559,12 @@ async function signup(){
 
   try{
 
-    /*
-      Referral code from URL
-      Example:
-      ?ref=E10-123456
-    */
+    /* Get referral code from URL */
 
     const params =
-      new URLSearchParams(window.location.search);
+      new URLSearchParams(
+        window.location.search
+      );
 
     const referralCode =
       params.get("ref");
@@ -571,38 +573,54 @@ async function signup(){
     let referredBy = null;
 
 
-    /*
-      Find referrer profile
-    */
+    /* =================================================
+       NEW REFERRAL LOOKUP
+
+       Uses the SECURITY DEFINER RPC function
+       created in Supabase SQL Editor.
+       ================================================= */
 
     if(referralCode){
 
-      const { data: referrer } =
-        await db
-          .from("users")
-          .select("user_id")
-          .eq("referral_code", referralCode)
-          .maybeSingle();
+      const {
+        data: referrerId,
+        error: refError
+      } =
+        await db.rpc(
+          "get_referrer_id",
+          {
+            p_referral_code:
+              referralCode
+          }
+        );
 
 
-      if(referrer){
+      if(refError){
+
+        console.log(
+          "Referral lookup error:",
+          refError
+        );
+
+      }else{
 
         referredBy =
-          referrer.user_id;
+          referrerId || null;
       }
     }
 
 
-    /*
-      Create Auth User
-    */
+    /* Create Auth User */
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await db.auth.signUp({
 
-        email: email,
+        email:email,
 
-        password: password,
+        password:password,
 
         options:{
           data:{
@@ -619,25 +637,33 @@ async function signup(){
     if(error){
 
       msg.innerText =
-        "Signup Error: " + error.message;
+        "Signup Error: " +
+        error.message;
 
       return;
     }
 
 
     msg.innerText =
-      "Account created successfully! Check your email if confirmation is required.";
+      "Account created successfully!";
 
+
+    /*
+      Email confirmation is currently OFF
+      for testing, so user can login directly.
+    */
 
     setTimeout(
       () => showLogin(),
-      2500
+      1500
     );
+
 
   }catch(error){
 
     msg.innerText =
-      "Error: " + error.message;
+      "Error: " +
+      error.message;
   }
 }
 
@@ -649,10 +675,12 @@ async function signup(){
 async function login(){
 
   const email =
-    document.getElementById("loginEmail").value.trim();
+    document.getElementById("loginEmail")
+      .value.trim();
 
   const password =
-    document.getElementById("loginPassword").value;
+    document.getElementById("loginPassword")
+      .value;
 
   const msg =
     document.getElementById("loginMessage");
@@ -673,7 +701,10 @@ async function login(){
 
   try{
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await db.auth.signInWithPassword({
 
         email:email,
@@ -686,7 +717,8 @@ async function login(){
     if(error){
 
       msg.innerText =
-        "Login Error: " + error.message;
+        "Login Error: " +
+        error.message;
 
       return;
     }
@@ -696,10 +728,12 @@ async function login(){
 
     await loadDashboard();
 
+
   }catch(error){
 
     msg.innerText =
-      "Error: " + error.message;
+      "Error: " +
+      error.message;
   }
 }
 
@@ -711,7 +745,8 @@ async function login(){
 async function forgotPassword(){
 
   const email =
-    document.getElementById("forgotEmail").value.trim();
+    document.getElementById("forgotEmail")
+      .value.trim();
 
   const msg =
     document.getElementById("resetMessage");
@@ -737,13 +772,16 @@ async function forgotPassword(){
       window.location.pathname;
 
 
-    const { error } =
+    const {
+      error
+    } =
       await db.auth.resetPasswordForEmail(
 
         email,
 
         {
-          redirectTo:redirectUrl
+          redirectTo:
+            redirectUrl
         }
 
       );
@@ -752,7 +790,8 @@ async function forgotPassword(){
     if(error){
 
       msg.innerText =
-        "Error: " + error.message;
+        "Error: " +
+        error.message;
 
       return;
     }
@@ -761,10 +800,12 @@ async function forgotPassword(){
     msg.innerText =
       "Password reset link sent. Check your email.";
 
+
   }catch(error){
 
     msg.innerText =
-      "Error: " + error.message;
+      "Error: " +
+      error.message;
   }
 }
 
@@ -776,13 +817,17 @@ async function forgotPassword(){
 async function updatePassword(){
 
   const password =
-    document.getElementById("newPassword").value;
+    document.getElementById("newPassword")
+      .value;
 
   const confirm =
-    document.getElementById("confirmPassword").value;
+    document.getElementById("confirmPassword")
+      .value;
 
   const msg =
-    document.getElementById("newPasswordMessage");
+    document.getElementById(
+      "newPasswordMessage"
+    );
 
 
   if(!password || !confirm){
@@ -818,7 +863,9 @@ async function updatePassword(){
 
   try{
 
-    const { error } =
+    const {
+      error
+    } =
       await db.auth.updateUser({
 
         password:password
@@ -829,7 +876,8 @@ async function updatePassword(){
     if(error){
 
       msg.innerText =
-        "Error: " + error.message;
+        "Error: " +
+        error.message;
 
       return;
     }
@@ -849,10 +897,12 @@ async function updatePassword(){
       1500
     );
 
+
   }catch(error){
 
     msg.innerText =
-      "Error: " + error.message;
+      "Error: " +
+      error.message;
   }
 }
 
@@ -894,7 +944,7 @@ async function loadDashboard(){
     await db
       .from("users")
       .select("*")
-      .eq("user_id", user.id)
+      .eq("user_id",user.id)
       .maybeSingle();
 
 
@@ -914,33 +964,40 @@ async function loadDashboard(){
   if(!profile){
 
     alert(
-      "Profile not found. Please contact support."
+      "Profile not found."
     );
 
     return;
   }
 
 
-  document.getElementById("welcomeText")
-    .innerText =
+  document.getElementById(
+    "welcomeText"
+  ).innerText =
     "Welcome, " +
     (profile.name || "User") +
     "!";
 
 
-  document.getElementById("balance")
-    .innerText =
+  document.getElementById(
+    "balance"
+  ).innerText =
     Number(profile.balance || 0);
 
 
-  document.getElementById("referralCount")
-    .innerText =
-    Number(profile.referral_count || 0);
+  document.getElementById(
+    "referralCount"
+  ).innerText =
+    Number(
+      profile.referral_count || 0
+    );
 
 
-  document.getElementById("referralCode")
-    .innerText =
-    profile.referral_code || "Not available";
+  document.getElementById(
+    "referralCode"
+  ).innerText =
+    profile.referral_code ||
+    "Not available";
 
 
   const link =
@@ -950,14 +1007,17 @@ async function loadDashboard(){
     profile.referral_code;
 
 
-  document.getElementById("referralLink")
-    .innerText = link;
+  document.getElementById(
+    "referralLink"
+  ).innerText =
+    link;
 
 
   hideAll();
 
-  document.getElementById("dashboardSection")
-    .classList.remove("hidden");
+  document.getElementById(
+    "dashboardSection"
+  ).classList.remove("hidden");
 }
 
 
@@ -968,19 +1028,25 @@ async function loadDashboard(){
 async function copyReferral(){
 
   const link =
-    document.getElementById("referralLink")
-      .innerText;
+    document.getElementById(
+      "referralLink"
+    ).innerText;
 
 
   try{
 
-    await navigator.clipboard.writeText(link);
+    await navigator.clipboard
+      .writeText(link);
 
-    alert("Referral link copied!");
+    alert(
+      "Referral link copied!"
+    );
 
   }catch(error){
 
-    alert("Copy failed. Please copy manually.");
+    alert(
+      "Copy failed. Please copy manually."
+    );
   }
 }
 
@@ -992,8 +1058,9 @@ async function copyReferral(){
 async function shareReferral(){
 
   const link =
-    document.getElementById("referralLink")
-      .innerText;
+    document.getElementById(
+      "referralLink"
+    ).innerText;
 
 
   if(navigator.share){
@@ -1027,17 +1094,19 @@ async function shareReferral(){
 
 function tapGame(){
 
-  document.getElementById("tapResult")
-    .innerText =
+  document.getElementById(
+    "tapResult"
+  ).innerText =
     "🎉 Great! You earned demo points.";
-
 }
 
 
 function quizAnswer(answer){
 
   const result =
-    document.getElementById("quizResult");
+    document.getElementById(
+      "quizResult"
+    );
 
 
   if(answer === 10){
@@ -1049,17 +1118,16 @@ function quizAnswer(answer){
 
     result.innerText =
       "❌ Wrong answer.";
-
   }
 }
 
 
 function dailyBonus(){
 
-  document.getElementById("bonusResult")
-    .innerText =
+  document.getElementById(
+    "bonusResult"
+  ).innerText =
     "🎁 Daily bonus claimed!";
-
 }
 
 
@@ -1082,7 +1150,7 @@ async function logout(){
    ===================================================== */
 
 db.auth.onAuthStateChange(
-  async (event, session) => {
+  async (event,session) => {
 
     console.log(
       "AUTH EVENT:",
@@ -1130,7 +1198,11 @@ async function checkSession(){
     window.location.hash;
 
 
-  if(hash.includes("type=recovery")){
+  if(
+    hash.includes(
+      "type=recovery"
+    )
+  ){
 
     recoveryMode = true;
 
@@ -1148,20 +1220,22 @@ async function checkSession(){
     await db.auth.getSession();
 
 
-  if(session && !recoveryMode){
+  if(
+    session &&
+    !recoveryMode
+  ){
 
     await loadDashboard();
 
   }else{
 
     showLogin();
-
   }
 }
 
 
 /* =====================================================
-   START APP
+   START
    ===================================================== */
 
 checkSession();
