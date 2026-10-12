@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>EARN10 Admin Panel</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: #fff;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .header {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    h1 {
+      font-size: 25px;
+    }
+
+    .subtitle {
+      color: #9ca3af;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+    }
+
+    .logout {
+      background: #dc2626;
+    }
+
+    .refresh {
+      background: #2563eb;
+      margin-bottom: 15px;
+    }
+
+    .login-card,
+    .panel {
+      background: #1f2937;
+      border: 1px solid #374151;
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .login-btn {
+      width: 100%;
+      background: #16a34a;
+      margin-top: 5px;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #374151;
+      text-align: center;
+      display: none;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 850px;
+    }
+
+    th,
+    td {
+      padding: 13px 10px;
+      border-bottom: 1px solid #374151;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    .pending {
+      color: #fbbf24;
+      font-weight: bold;
+    }
+
+    .paid {
+      color: #22c55e;
+      font-weight: bold;
+    }
+
+    .rejected {
+      color: #ef4444;
+      font-weight: bold;
+    }
+
+    .paid-btn {
+      background: #16a34a;
+      margin-right: 5px;
+    }
+
+    .reject-btn {
+      background: #dc2626;
+    }
+
+    .disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px;
+      color: #9ca3af;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 25px;
+      color: #9ca3af;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      h1 {
+        font-size: 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LOGIN -->
+  <div id="loginSection" class="login-card">
+
+    <h1>🔐 EARN10 Admin Login</h1>
+
+    <p class="subtitle">
+      Only the authorized EARN10 admin account can access this panel.
+    </p>
+
+    <input
+      type="email"
+      id="email"
+      placeholder="Admin Email"
+    >
+
+    <input
+      type="password"
+      id="password"
+      placeholder="Password"
+    >
+
+    <button
+      class="login-btn"
+      onclick="adminLogin()"
+    >
+      Login
+    </button>
+
+    <div id="loginMessage" class="message"></div>
+
+  </div>
+
+
+  <!-- ADMIN PANEL -->
+  <div id="adminSection" style="display:none;">
+
+    <div class="header">
+
+      <div>
+        <h1>💰 EARN10 Admin Panel</h1>
+
+        <p class="subtitle">
+          Withdrawal Management
+        </p>
+      </div>
+
+      <button
+        class="logout"
+        onclick="logout()"
+      >
+        Logout
+      </button>
+
+    </div>
+
+
+    <div class="panel">
+
+      <button
+        class="refresh"
+        onclick="loadWithdrawals()"
+      >
+        🔄 Refresh Requests
+      </button>
+
+      <div id="adminMessage" class="message"></div>
+
+      <div class="table-wrap">
+
+        <table>
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Amount</th>
+              <th>UPI ID</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="withdrawalTable">
+
+            <tr>
+              <td colspan="8" class="loading">
+                Loading...
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  // ==========================================
+  // SUPABASE CONFIG
+  // ==========================================
+
+  const SUPABASE_URL =
+    "https://rwwihwmlsdqafehtywdl.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+  // ==========================================
+  // LOGIN
+  // ==========================================
+
+  async function adminLogin() {
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+    if (!email || !password) {
+
+      showMessage(
+        message,
+        "Please enter email and password."
+      );
+
+      return;
+    }
+
+    showMessage(
+      message,
+      "Logging in..."
+    );
+
+
+    const { data, error } =
+      await db.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      showMessage(
+        message,
+        "Login Error: " + error.message
+      );
+
+      return;
+    }
+
+
+    // Check admin permission
+    const { data: adminRows, error: adminError } =
+      await db.rpc("get_admin_withdrawals");
+
+
+    if (adminError) {
+
+      await db.auth.signOut();
+
+      showMessage(
+        message,
+        "Admin access denied: " + adminError.message
+      );
+
+      return;
+    }
+
+
+    document.getElementById(
+      "loginSection"
+    ).style.display = "none";
+
+    document.getElementById(
+      "adminSection"
+    ).style.display = "block";
+
+
+    renderWithdrawals(adminRows || []);
+
+  }
+
+
+  // ==========================================
+  // LOAD WITHDRAWALS
+  // ==========================================
+
+  async function loadWithdrawals() {
+
+    const table =
+      document.getElementById("withdrawalTable");
+
+    table.innerHTML = `
+      <tr>
+        <td colspan="8" class="loading">
+          Loading withdrawal requests...
+        </td>
+      </tr>
+    `;
+
+
+    const {
+      data,
+      error
+    } = await db.rpc(
+      "get_admin_withdrawals"
+    );
+
+
+    if (error) {
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty">
+            Error: ${escapeHtml(error.message)}
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    renderWithdrawals(data || []);
+  }
+
+
+  // ==========================================
+  // DISPLAY WITHDRAWALS
+  // ==========================================
+
+  function renderWithdrawals(rows) {
+
+    const table =
+      document.getElementById("withdrawalTable");
+
+
+    if (!rows.length) {
+
+      table.innerHTML = `
+        <tr>
+          <td colspan="8" class="empty">
+            No withdrawal requests found.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+
+    table.innerHTML = rows.map(row => {
+
+      const status =
+        String(row.status || "").toLowerCase();
+
+
+      let action = "";
+
+      if (status === "pending") {
+
+        action = `
+          <button
+            class="paid-btn"
+            onclick="updateWithdrawal(${row.id}, 'paid')"
+          >
+            ✅ Paid
+          </button>
+
+          <button
+            class="reject-btn"
+            onclick="updateWithdrawal(${row.id}, 'rejected')"
+          >
+            ❌ Reject
+          </button>
+        `;
+
+      } else {
+
+        action = `
+          <span class="disabled">
+            Processed
+          </span>
+        `;
+
+      }
+
+
+      const statusClass =
+        status === "paid"
+          ? "paid"
+          : status === "rejected"
+            ? "rejected"
+            : "pending";
+
+
+      return `
+        <tr>
+
+          <td>
+            #${row.id}
+          </td>
+
+          <td>
+            ${escapeHtml(row.name || "User")}
+          </td>
+
+          <td>
+            ${escapeHtml(row.email || "-")}
+          </td>
+
+          <td>
+            ₹${Number(row.amount || 0).toFixed(2)}
+          </td>
+
+          <td>
+            ${escapeHtml(row.upi_id || "-")}
+          </td>
+
+          <td class="${statusClass}">
+            ${escapeHtml(status.toUpperCase())}
+          </td>
+
+          <td>
+            ${formatDate(row.created_at)}
+          </td>
+
+          <td>
+            ${action}
+          </td>
+
+        </tr>
+      `;
+
+    }).join("");
+
+  }
+
+
+  // ==========================================
+  // PAID / REJECT
+  // ==========================================
+
+  async function updateWithdrawal(
+    requestId,
+    newStatus
+  ) {
+
+    const actionText =
+      newStatus === "paid"
+        ? "mark this withdrawal as PAID"
+        : "REJECT this withdrawal";
+
+
+    const confirmed =
+      confirm(
+        "Are you sure you want to " +
+        actionText +
+        "?\n\n" +
+        (
+          newStatus === "rejected"
+            ? "The amount will be refunded to the user's wallet."
+            : "Make sure you have manually paid the user."
+        )
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } = await db.rpc(
+      "admin_update_withdrawal",
+      {
+        p_request_id: requestId,
+        p_status: newStatus
+      }
+    );
+
+
+    if (error) {
+
+      alert(
+        "Error: " + error.message
+      );
+
+      return;
+    }
+
+
+    alert(
+      newStatus === "paid"
+        ? "Withdrawal marked as PAID."
+        : "Withdrawal rejected and amount refunded."
+    );
+
+
+    loadWithdrawals();
+
+  }
+
+
+  // ==========================================
+  // LOGOUT
+  // ==========================================
+
+  async function logout() {
+
+    await db.auth.signOut();
+
+    document.getElementById(
+      "adminSection"
+    ).style.display = "none";
+
+    document.getElementById(
+      "loginSection"
+    ).style.display = "block";
+
+    document.getElementById(
+      "password"
+    ).value = "";
+
+  }
+
+
+  // ==========================================
+  // HELPERS
+  // ==========================================
+
+  function showMessage(element, text) {
+
+    element.textContent = text;
+
+    element.style.display = "block";
+
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) {
+      return "-";
+    }
+
+    return new Date(date).toLocaleString(
+      "en-IN"
+    );
+
+  }
+
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // ==========================================
+  // CHECK EXISTING SESSION
+  // ==========================================
+
+  async function checkSession() {
+
+    const {
+      data: { session }
+    } = await db.auth.getSession();
+
+
+    if (!session) {
+      return;
+    }
+
+
+    const {
+      data,
+      error
+    } = await db.rpc(
+      "get_admin_withdrawals"
+    );
+
+
+    if (error) {
+
+      await db.auth.signOut();
+
+      return;
+    }
+
+
+    document.getElementById(
+      "loginSection"
+    ).style.display = "none";
+
+    document.getElementById(
+      "adminSection"
+    ).style.display = "block";
+
+
+    renderWithdrawals(data || []);
+
+  }
+
+
+  checkSession();
+
+</script>
+
+</body>
+</html>
