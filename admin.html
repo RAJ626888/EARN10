@@ -1,728 +1,328 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EARN10 Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <title>EARN10 Admin Panel</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: #111827;
-      color: #fff;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: auto;
-    }
-
-    .header {
-      background: #1f2937;
-      border: 1px solid #374151;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    h1 {
-      font-size: 25px;
-    }
-
-    .subtitle {
-      color: #9ca3af;
-      margin-top: 6px;
-      font-size: 14px;
-    }
-
-    button {
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
-      cursor: pointer;
-      font-weight: bold;
-      color: white;
-    }
-
-    .logout {
-      background: #dc2626;
-    }
-
-    .refresh {
-      background: #2563eb;
-      margin-bottom: 15px;
-    }
-
-    .login-card,
-    .panel {
-      background: #1f2937;
-      border: 1px solid #374151;
-      border-radius: 16px;
-      padding: 22px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      margin-top: 10px;
-      margin-bottom: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    .login-btn {
-      width: 100%;
-      background: #16a34a;
-      margin-top: 5px;
-    }
-
-    .message {
-      margin-top: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      background: #374151;
-      text-align: center;
-      display: none;
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
-    }
-
-    th,
-    td {
-      padding: 13px 10px;
-      border-bottom: 1px solid #374151;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      color: #9ca3af;
-      font-size: 13px;
-    }
-
-    .pending {
-      color: #fbbf24;
-      font-weight: bold;
-    }
-
-    .paid {
-      color: #22c55e;
-      font-weight: bold;
-    }
-
-    .rejected {
-      color: #ef4444;
-      font-weight: bold;
-    }
-
-    .paid-btn {
-      background: #16a34a;
-      margin-right: 5px;
-    }
-
-    .reject-btn {
-      background: #dc2626;
-    }
-
-    .disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 30px;
-      color: #9ca3af;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 25px;
-      color: #9ca3af;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      h1 {
-        font-size: 21px;
-      }
-    }
-  </style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#111827;color:#fff;padding:20px}
+.container{max-width:1250px;margin:auto}
+.header,.panel,.login-card,.stat-card{background:#1f2937;border:1px solid #374151;border-radius:14px;padding:20px}
+.header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}
+.subtitle{color:#9ca3af;margin-top:8px;font-size:14px}
+button{border:0;border-radius:8px;padding:10px 13px;color:#fff;font-weight:bold;cursor:pointer;margin:2px}
+input{width:100%;padding:13px;margin:10px 0;border:0;border-radius:8px;font-size:15px}
+.login-card{max-width:430px;margin:50px auto}
+.login-btn{background:#16a34a;width:100%}
+.logout,.reject-btn{background:#dc2626}
+.refresh{background:#2563eb;margin-bottom:15px}
+.paid-btn{background:#16a34a}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.stat-card p{color:#9ca3af;font-size:14px;margin-bottom:12px}
+.stat-card h2{font-size:26px;color:#22c55e;overflow-wrap:anywhere}
+.table-wrap{overflow-x:auto}
+table{width:100%;min-width:900px;border-collapse:collapse}
+th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #374151;font-size:14px}
+th{color:#9ca3af}
+.pending{color:#fbbf24;font-weight:bold}
+.paid{color:#22c55e;font-weight:bold}
+.rejected{color:#f87171;font-weight:bold}
+.message{margin:12px 0;padding:12px;background:#374151;border-radius:8px;overflow-wrap:anywhere}
+.empty{text-align:center;padding:25px;color:#9ca3af}
+@media(max-width:800px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){body{padding:10px}.header{align-items:flex-start}.stat-card{padding:13px}.stat-card h2{font-size:21px}}
+</style>
 </head>
 
 <body>
-
 <div class="container">
 
-  <!-- LOGIN -->
   <div id="loginSection" class="login-card">
-
-    <h1>🔐 EARN10 Admin Login</h1>
-
-    <p class="subtitle">
-      Only the authorized EARN10 admin account can access this panel.
-    </p>
-
-    <input
-      type="email"
-      id="email"
-      placeholder="Admin Email"
-    >
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-    >
-
-    <button
-      class="login-btn"
-      onclick="adminLogin()"
-    >
-      Login
-    </button>
-
-    <div id="loginMessage" class="message"></div>
-
+    <h2>🔐 EARN10 Admin Login</h2>
+    <p class="subtitle">Login with your authorized admin account.</p>
+    <form id="loginForm">
+      <input id="email" type="email" placeholder="Admin email" required>
+      <input id="password" type="password" placeholder="Password" required>
+      <button class="login-btn" type="submit">Login</button>
+    </form>
+    <div id="loginMessage" class="message" hidden></div>
   </div>
 
-
-  <!-- ADMIN PANEL -->
-  <div id="adminSection" style="display:none;">
-
+  <section id="adminSection" hidden>
     <div class="header">
-
       <div>
-        <h1>💰 EARN10 Admin Panel</h1>
-
-        <p class="subtitle">
-          Withdrawal Management
-        </p>
+        <h1>💰 EARN10 Admin</h1>
+        <p class="subtitle">Dashboard & Withdrawal Management</p>
       </div>
-
-      <button
-        class="logout"
-        onclick="logout()"
-      >
-        Logout
-      </button>
-
+      <button class="logout" id="logoutBtn">Logout</button>
     </div>
 
+    <div class="stats-grid">
+      <div class="stat-card">
+        <p>Total Users</p>
+        <h2 id="totalUsers">—</h2>
+      </div>
+      <div class="stat-card">
+        <p>Total Referrals</p>
+        <h2 id="totalReferrals">—</h2>
+      </div>
+      <div class="stat-card">
+        <p>Total Wallet Balance</p>
+        <h2 id="totalBalance">—</h2>
+      </div>
+      <div class="stat-card">
+        <p>Total Withdrawals</p>
+        <h2 id="totalWithdrawals">—</h2>
+      </div>
+    </div>
 
     <div class="panel">
-
-      <button
-        class="refresh"
-        onclick="loadWithdrawals()"
-      >
-        🔄 Refresh Requests
-      </button>
-
-      <div id="adminMessage" class="message"></div>
+      <h2 style="margin-bottom:15px">Withdrawal Requests</h2>
+      <button class="refresh" id="refreshBtn">🔄 Refresh Dashboard</button>
+      <div id="adminMessage" class="message" hidden></div>
 
       <div class="table-wrap">
-
         <table>
-
           <thead>
             <tr>
-              <th>ID</th>
-              <th>User</th>
-              <th>Email</th>
-              <th>Amount</th>
-              <th>UPI ID</th>
-              <th>Status</th>
-              <th>Date</th>
-              <th>Action</th>
+              <th>ID</th><th>User</th><th>Email</th>
+              <th>Amount</th><th>UPI ID</th>
+              <th>Status</th><th>Date</th><th>Action</th>
             </tr>
           </thead>
-
           <tbody id="withdrawalTable">
-
-            <tr>
-              <td colspan="8" class="loading">
-                Loading...
-              </td>
-            </tr>
-
+            <tr><td colspan="8" class="empty">Loading...</td></tr>
           </tbody>
-
         </table>
-
       </div>
-
     </div>
-
-  </div>
-
+  </section>
 </div>
 
-
 <script>
+const SUPABASE_URL =
+  "https://rwwihwmlsdqafehtywdl.supabase.co";
 
-  // ==========================================
-  // SUPABASE CONFIG
-  // ==========================================
+const SUPABASE_KEY = "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
 
-  const SUPABASE_URL =
-    "https://rwwihwmlsdqafehtywdl.supabase.co";
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-  const SUPABASE_KEY =
-    "sb_publishable_Z6I8JiR_xrHXejySO7QokA_bSqpjGTI";
+const $ = id => document.getElementById(id);
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+function message(id, text) {
+  $(id).textContent = text;
+  $(id).hidden = false;
+}
 
+function formatMoney(value) {
+  return "₹" + Number(value || 0).toLocaleString("en-IN", {
+    maximumFractionDigits: 2
+  });
+}
 
-  // ==========================================
-  // LOGIN
-  // ==========================================
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
-  async function adminLogin() {
+function dateText(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? "—"
+    : date.toLocaleString("en-IN");
+}
 
-    const email =
-      document.getElementById("email").value.trim();
+async function loadDashboard() {
+  $("refreshBtn").disabled = true;
+  $("refreshBtn").textContent = "Loading...";
 
-    const password =
-      document.getElementById("password").value;
+  try {
+    // Each RPC verifies admin permission on the server.
+    const [statsResult, withdrawalsResult] = await Promise.all([
+      db.rpc("get_admin_stats"),
+      db.rpc("get_admin_withdrawals")
+    ]);
 
-    const message =
-      document.getElementById("loginMessage");
+    if (statsResult.error) throw statsResult.error;
+    if (withdrawalsResult.error) throw withdrawalsResult.error;
 
-    if (!email || !password) {
+    const stats = statsResult.data || {};
 
-      showMessage(
-        message,
-        "Please enter email and password."
-      );
+    $("totalUsers").textContent =
+      Number(stats.total_users || 0).toLocaleString("en-IN");
 
-      return;
-    }
+    $("totalReferrals").textContent =
+      Number(stats.total_referrals || 0).toLocaleString("en-IN");
 
-    showMessage(
-      message,
-      "Logging in..."
-    );
+    $("totalBalance").textContent =
+      formatMoney(stats.total_balance);
 
+    $("totalWithdrawals").textContent =
+      formatMoney(stats.total_withdrawals);
 
-    const { data, error } =
-      await db.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+    renderWithdrawals(withdrawalsResult.data || []);
+    $("adminMessage").hidden = true;
+  } catch (error) {
+    message("adminMessage", "Error: " + error.message);
+  } finally {
+    $("refreshBtn").disabled = false;
+    $("refreshBtn").textContent = "🔄 Refresh Dashboard";
+  }
+}
 
+function renderWithdrawals(rows) {
+  const table = $("withdrawalTable");
 
-    if (error) {
-
-      showMessage(
-        message,
-        "Login Error: " + error.message
-      );
-
-      return;
-    }
-
-
-    // Check admin permission
-    const { data: adminRows, error: adminError } =
-      await db.rpc("get_admin_withdrawals");
-
-
-    if (adminError) {
-
-      await db.auth.signOut();
-
-      showMessage(
-        message,
-        "Admin access denied: " + adminError.message
-      );
-
-      return;
-    }
-
-
-    document.getElementById(
-      "loginSection"
-    ).style.display = "none";
-
-    document.getElementById(
-      "adminSection"
-    ).style.display = "block";
-
-
-    renderWithdrawals(adminRows || []);
-
+  if (!rows.length) {
+    table.innerHTML =
+      '<tr><td colspan="8" class="empty">No withdrawal requests found.</td></tr>';
+    return;
   }
 
+  table.innerHTML = rows.map(row => {
+    const status = String(row.status || "pending").toLowerCase();
+    let action = "—";
 
-  // ==========================================
-  // LOAD WITHDRAWALS
-  // ==========================================
+    if (status === "pending") {
+      action = `
+        <button class="paid-btn"
+          data-id="${Number(row.id)}" data-status="paid">
+          Paid
+        </button>
+        <button class="reject-btn"
+          data-id="${Number(row.id)}" data-status="rejected">
+          Reject
+        </button>`;
+    }
 
-  async function loadWithdrawals() {
+    const statusClass =
+      status === "paid" ? "paid" :
+      status === "rejected" ? "rejected" : "pending";
 
-    const table =
-      document.getElementById("withdrawalTable");
-
-    table.innerHTML = `
+    return `
       <tr>
-        <td colspan="8" class="loading">
-          Loading withdrawal requests...
-        </td>
-      </tr>
-    `;
+        <td>#${Number(row.id)}</td>
+        <td>${safe(row.name || "User")}</td>
+        <td>${safe(row.email || "—")}</td>
+        <td>${formatMoney(row.amount)}</td>
+        <td>${safe(row.upi_id || "—")}</td>
+        <td class="${statusClass}">${safe(status.toUpperCase())}</td>
+        <td>${safe(dateText(row.created_at))}</td>
+        <td>${action}</td>
+      </tr>`;
+  }).join("");
+}
 
+$("withdrawalTable").addEventListener("click", async event => {
+  const button = event.target.closest("button[data-status]");
+  if (!button || button.disabled) return;
 
-    const {
-      data,
-      error
-    } = await db.rpc(
-      "get_admin_withdrawals"
+  const id = Number(button.dataset.id);
+  const status = button.dataset.status;
+
+  const promptText = status === "paid"
+    ? "Have you actually paid this user by UPI? Mark as PAID?"
+    : "Reject this request and refund its amount to the user's wallet?";
+
+  if (!Number.isSafeInteger(id) || !confirm(promptText)) return;
+
+  button.disabled = true;
+
+  try {
+    const { error } = await db.rpc("admin_update_withdrawal", {
+      p_request_id: id,
+      p_status: status
+    });
+
+    if (error) throw error;
+
+    message(
+      "adminMessage",
+      status === "paid"
+        ? "Request marked as PAID."
+        : "Request rejected. Check the user's wallet for the refund."
     );
 
+    await loadDashboard();
+  } catch (error) {
+    alert("Update failed: " + error.message);
+    button.disabled = false;
+  }
+});
 
-    if (error) {
+$("loginForm").addEventListener("submit", async event => {
+  event.preventDefault();
 
-      table.innerHTML = `
-        <tr>
-          <td colspan="8" class="empty">
-            Error: ${escapeHtml(error.message)}
-          </td>
-        </tr>
-      `;
+  const email = $("email").value.trim();
+  const password = $("password").value;
 
-      return;
-    }
+  message("loginMessage", "Checking login and admin permission...");
 
+  const { error } = await db.auth.signInWithPassword({
+    email,
+    password
+  });
 
-    renderWithdrawals(data || []);
+  if (error) {
+    message("loginMessage", "Login failed: " + error.message);
+    return;
   }
 
+  // Verify admin privileges on the server before showing the panel.
+  const { error: checkError } =
+    await db.rpc("get_admin_withdrawals");
 
-  // ==========================================
-  // DISPLAY WITHDRAWALS
-  // ==========================================
-
-  function renderWithdrawals(rows) {
-
-    const table =
-      document.getElementById("withdrawalTable");
-
-
-    if (!rows.length) {
-
-      table.innerHTML = `
-        <tr>
-          <td colspan="8" class="empty">
-            No withdrawal requests found.
-          </td>
-        </tr>
-      `;
-
-      return;
-    }
-
-
-    table.innerHTML = rows.map(row => {
-
-      const status =
-        String(row.status || "").toLowerCase();
-
-
-      let action = "";
-
-      if (status === "pending") {
-
-        action = `
-          <button
-            class="paid-btn"
-            onclick="updateWithdrawal(${row.id}, 'paid')"
-          >
-            ✅ Paid
-          </button>
-
-          <button
-            class="reject-btn"
-            onclick="updateWithdrawal(${row.id}, 'rejected')"
-          >
-            ❌ Reject
-          </button>
-        `;
-
-      } else {
-
-        action = `
-          <span class="disabled">
-            Processed
-          </span>
-        `;
-
-      }
-
-
-      const statusClass =
-        status === "paid"
-          ? "paid"
-          : status === "rejected"
-            ? "rejected"
-            : "pending";
-
-
-      return `
-        <tr>
-
-          <td>
-            #${row.id}
-          </td>
-
-          <td>
-            ${escapeHtml(row.name || "User")}
-          </td>
-
-          <td>
-            ${escapeHtml(row.email || "-")}
-          </td>
-
-          <td>
-            ₹${Number(row.amount || 0).toFixed(2)}
-          </td>
-
-          <td>
-            ${escapeHtml(row.upi_id || "-")}
-          </td>
-
-          <td class="${statusClass}">
-            ${escapeHtml(status.toUpperCase())}
-          </td>
-
-          <td>
-            ${formatDate(row.created_at)}
-          </td>
-
-          <td>
-            ${action}
-          </td>
-
-        </tr>
-      `;
-
-    }).join("");
-
-  }
-
-
-  // ==========================================
-  // PAID / REJECT
-  // ==========================================
-
-  async function updateWithdrawal(
-    requestId,
-    newStatus
-  ) {
-
-    const actionText =
-      newStatus === "paid"
-        ? "mark this withdrawal as PAID"
-        : "REJECT this withdrawal";
-
-
-    const confirmed =
-      confirm(
-        "Are you sure you want to " +
-        actionText +
-        "?\n\n" +
-        (
-          newStatus === "rejected"
-            ? "The amount will be refunded to the user's wallet."
-            : "Make sure you have manually paid the user."
-        )
-      );
-
-
-    if (!confirmed) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } = await db.rpc(
-      "admin_update_withdrawal",
-      {
-        p_request_id: requestId,
-        p_status: newStatus
-      }
-    );
-
-
-    if (error) {
-
-      alert(
-        "Error: " + error.message
-      );
-
-      return;
-    }
-
-
-    alert(
-      newStatus === "paid"
-        ? "Withdrawal marked as PAID."
-        : "Withdrawal rejected and amount refunded."
-    );
-
-
-    loadWithdrawals();
-
-  }
-
-
-  // ==========================================
-  // LOGOUT
-  // ==========================================
-
-  async function logout() {
-
+  if (checkError) {
     await db.auth.signOut();
-
-    document.getElementById(
-      "adminSection"
-    ).style.display = "none";
-
-    document.getElementById(
-      "loginSection"
-    ).style.display = "block";
-
-    document.getElementById(
-      "password"
-    ).value = "";
-
+    message("loginMessage", "Admin access denied: " + checkError.message);
+    return;
   }
 
+  $("loginSection").hidden = true;
+  $("adminSection").hidden = false;
+  await loadDashboard();
+});
 
-  // ==========================================
-  // HELPERS
-  // ==========================================
+$("refreshBtn").addEventListener("click", loadDashboard);
 
-  function showMessage(element, text) {
+$("logoutBtn").addEventListener("click", async () => {
+  await db.auth.signOut();
+  $("adminSection").hidden = true;
+  $("loginSection").hidden = false;
+  $("password").value = "";
+  $("loginMessage").hidden = true;
+});
 
-    element.textContent = text;
+async function checkExistingSession() {
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return;
 
-    element.style.display = "block";
+  const { error } = await db.rpc("get_admin_withdrawals");
 
+  if (error) {
+    await db.auth.signOut();
+    return;
   }
 
+  $("loginSection").hidden = true;
+  $("adminSection").hidden = false;
+  await loadDashboard();
+}
 
-  function formatDate(date) {
-
-    if (!date) {
-      return "-";
-    }
-
-    return new Date(date).toLocaleString(
-      "en-IN"
-    );
-
-  }
-
-
-  function escapeHtml(value) {
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-  }
-
-
-  // ==========================================
-  // CHECK EXISTING SESSION
-  // ==========================================
-
-  async function checkSession() {
-
-    const {
-      data: { session }
-    } = await db.auth.getSession();
-
-
-    if (!session) {
-      return;
-    }
-
-
-    const {
-      data,
-      error
-    } = await db.rpc(
-      "get_admin_withdrawals"
-    );
-
-
-    if (error) {
-
-      await db.auth.signOut();
-
-      return;
-    }
-
-
-    document.getElementById(
-      "loginSection"
-    ).style.display = "none";
-
-    document.getElementById(
-      "adminSection"
-    ).style.display = "block";
-
-
-    renderWithdrawals(data || []);
-
-  }
-
-
-  checkSession();
-
+checkExistingSession();
 </script>
-
 </body>
 </html>
